@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MTsS Nurul Iman Rejo Agung - Website Resmi Madrasah</title>
+    <!-- Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- TOP BAR -->
+    <div class="top-bar">
+        <div class="container top-bar-container">
+            <div class="top-info">
+                <span><i class="fas fa-map-marker-alt"></i> Rejo Agung, Kec. Tegineneng, Kab. Pesawaran, Lampung</span>
+                <span><i class="fas fa-envelope"></i> mtsnurulimanrejoagung@gmail.com</span>
+            </div>
+            <div class="top-social">
+                <a href="https://www.instagram.com/mtsnurulimanrejoagung?xtok=MWM3NW56czNtanF1ag==" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.facebook.com/share/18sLQh4SEs/" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://www.tiktok.com/@mtsnurulimanrejoagung?_r=1&_t=ZS-9BQSEXSqoWA" target="_blank" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                <a href="https://youtube.com/@mtsnurulimanrejoagung?si=ZpMD5FcAGb5L1xf3" target="_blank" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <!-- HEADER / NAVBAR -->
+    <header class="header">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <img src="logo.jpeg" alt="Logo MTsS Nurul Iman" style="width: 50px; height: 50px; object-fit: contain; border-radius: 8px; margin-right: 12px;">
+                <div class="logo-text">
+                    <h1>MTsS NURUL IMAN</h1>
+                    <p>Rejo Agung</p>
+                </div>
+            </a>
+            
+            <nav class="navbar" id="navbar">
+                <ul class="main-menu">
+                    <li><a href="#beranda" class="active">Beranda</a></li>
+                    
+                    <!-- Menu Profil dengan Dropdown Vertikal Tanpa Garis Bawah -->
+                    <li class="dropdown">
+                        <a href="#profil">Profil <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#visi-misi">Visi & Misi</a></li>
+                            <li><a href="#struktur">Struktur Organisasi</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Menu Akademik (Berisi Program, Ekstrakurikuler, Sarana) -->
+                    <li class="dropdown">
+                        <a href="#akademik">Akademik <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#program">Program Unggulan</a></li>
+                            <li><a href="#ekstrakurikuler">Ekstrakurikuler</a></li>
+                            <li><a href="#sarana">Sarana & Prasarana</a></li>
+                        </ul>
+                    </li>
+
+                    <li><a href="#berita">Berita & Galeri</a></li>
+                    <li><a href="#kontak">Kontak</a></li>
+                </ul>
+            </nav>
+
+            <div class="nav-actions">
+                <a href="#pmbm" class="btn-gold" id="pmbmBtn">PMBM 2027</a>
+                <button class="mobile-menu-btn" id="menuBtn" aria-label="Toggle Menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section id="beranda" class="hero">
+        <div class="hero-overlay"></div>
+        <div class="container hero-content">
+            <span class="badge-tag">Selamat Datang di Website Resmi</span>
+            <h1>MTsS Nurul Iman Rejo Agung</h1>
+            <p>Cerdas, Unggul, dan Berkarakter Islami.</p>
+            <div class="hero-buttons">
+                <a href="#profil" class="btn-primary">Tentang Madrasah</a>
+                <a href="#berita" class="btn-secondary">Lihat Berita Terbaru</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROFIL SECTION -->
+    <section id="profil" class="section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Profil Madrasah</h2>
+                <p>Mengenal lebih dekat MTsS Nurul Iman Rejo Agung</p>
+            </div>
+            <div class="profile-grid">
+                <div class="profile-card">
+                    <div class="profile-img">
+                        <img src="kelas.jpeg" alt="Gedung Madrasah">
+                    </div>
+                    <div class="profile-text">
+                        <h3>Tentang Kami</h3>
+                        <p><strong>MTsS Nurul Iman Rejo Agung adalah</strong> lembaga pendidikan Islam tingkat menengah yang memadukan kurikulum nasional Kementerian Agama dengan nilai-nilai keislaman mendalam. Kami berkomitmen mencetak generasi cerdas, berakhlak mulia, serta siap menghadapi tantangan zaman melalui pembinaan karakter dan akademik yang disiplin.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VISI & MISI -->
+            <div id="visi-misi" class="visi-misi-grid">
+                <div class="vm-card">
+                    <div class="vm-icon"><i class="fas fa-eye"></i></div>
+                    <h3>Visi</h3>
+                    <p>"Terwujudnya Murid yang Cerdas, Unggul, Berwawasan IPTEK yang Berdasarkan IMTAQ."</p>
+                </div>
+                <div class="vm-card">
+                    <div class="vm-icon"><i class="fas fa-rocket"></i></div>
+                    <h3>Misi</h3>
+                    <ul>
+                        <li>Meningkatkan keimanan dan ketaqwaan serta akhlaqul karimah dalam kehidupan sehari-hari.</li>
+                        <li>Mewujudkan pendidikan yang berkepribadian dinamis, cerdas, terampil, dan menguasai pengetahuan, tehnologi dan seni.</li>
+                        <li>Meningkatkan kualitas pendidik, tenaga kependidikan dan kompetensi kelulusan.</li>
+                        <li>Mengembangkan kurikulum madrasah melalui pembelajaran aktif, inovatif, kreatif, efektif, dan menyenangkan dengan pendekatan scientifik serta mengacu pada tuntutan abad 21 dan 4.0 (digitalisasi).</li>
+                        <li>Meningkatkan dan mengembangkan sarana prasarana pendidikan.</li>
+                        <li>Mewujudkan standar penilaian pendidikan.</li>
+                        <li>Meningkatkan peran aktif stake holders dalam mewujudkan MBM (Manajemen Berbasis Madrasah) yang handal.</li>
+                        <li>Mewujudkan madrasah yang bersih, sehat, disiplin dan tanggungjawab.</li>
+                        <li>Memiliki budaya menjaga dan melestarikan lingkungan (Ekoteologi).</li>
+                        <li>Membiasakan berprilaku mencegah kerusakan lingkungannya.</li>
+                        <li>Membudayakan berpikir dan berprilaku mencegah pencemaran lingkungan.</li>
+                        <li>Membiasakan berprilaku agamis dan sopan santun serta beradab.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- STRUKTUR ORGANISASI -->
+            <div id="struktur" class="struktur-section">
+                <div class="section-title" style="margin-top: 50px;">
+                    <h2>Struktur Organisasi</h2>
+                    <p>Kepemimpinan dan Manajemen MTsS Nurul Iman Rejo Agung</p>
+                </div>
+                <div class="org-tree">
+                    <div class="org-box principal">
+                        <h4>Kepala Madrasah</h4>
+                        <p>Elok Puji Hartanti, S.Ag., M.Pd.</p>
+                    </div>
+                    <div class="org-connector"></div>
+                    <div class="org-row">
+                        <div class="org-box">
+                            <h4>Wakil Kepala Kurikulum</h4>
+                            <p>Yuli Fitriyani, S.Pd.</p>
+                        </div>
+                        <div class="org-box">
+                            <h4>Wakil Kepala Kesiswaan</h4>
+                            <p>Desi Harisandi, S.Pd.I.</p>
+                        </div>
+                        <div class="org-box">
+                            <h4>Wakil Kepala Sarana & Prasarana</h4>
+                            <p>Sahrul, S.Pd.I., M.M.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AKADEMIK SECTION -->
+    <section id="akademik" class="section bg-light">
+        <div class="container">
+            <div class="section-title">
+                <h2>Akademik & Program Unggulan</h2>
+                <p>Kurikulum terbaik untuk mengoptimalkan potensi siswa</p>
+            </div>
+            <div class="grid-3" id="program">
+                <div class="card-item">
+                    <div class="card-icon"><i class="fas fa-quran"></i></div>
+                    <h3>Tahfidz Al-Qur'an</h3>
+                    <p>Program hafalan Juz 30, 29, dan pilihan surat penunjang dengan bimbingan ustadz/ustadzah berpengalaman.</p>
+                </div>
+                <div class="card-item">
+                    <div class="card-icon"><i class="fas fa-book-open"></i></div>
+                    <h3>Muhadhoroh</h3>
+                    <p>Kegiatan pengembangan bakat dan keterampilan santri dalam bidang keagamaan, seperti pidato, MC, tilawah, sari tilawah, dan shalawat untuk membentuk pribadi yang percaya diri, kreatif, serta berakhlakul karimah.</p>
+                </div>
+                <div class="card-item">
+                    <div class="card-icon"><i class="fas fa-award"></i></div>
+                    <h3>SAINS</h3>
+                    <p>Pembinaan intensif Matematika, IPA, dan IPS untuk persiapan kompetisi tingkat kabupaten hingga nasional.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- EKSTRAKURIKULER -->
+    <section id="ekstrakurikuler" class="section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Ekstrakurikuler</h2>
+                <p>Wadah pengembangan bakat dan minat peserta didik</p>
+            </div>
+            <div class="grid-4">
+                <div class="extrah-card">
+                    <i class="fas fa-book-quran"></i>
+                    <h4>Tahfidz</h4>
+                    <p>Program hafalan Al-Qur'an Juz 30, 29, dan surat-surat pilihan dengan bimbingan ustadz/ustadzah.</p>
+                </div>
+                <div class="extrah-card">
+                    <i class="fas fa-book-open"></i>
+                    <h4>Muhadhoroh</h4>
+                    <p>Latihan pidato, MC, tilawah, shalawat, dan seni dakwah untuk meningkatkan keberanian serta keterampilan berbicara di depan umum.</p>
+                </div>
+                <div class="extrah-card">
+                    <i class="fas fa-campground"></i>
+                    <h4>Pramuka</h4>
+                    <p>Melatih kepemimpinan, kemandirian, dan kedisiplinan.</p>
+                </div>
+                <div class="extrah-card">
+                    <i class="fas fa-flag"></i>
+                    <h4>Paskibra</h4>
+                    <p>Membentuk jiwa nasionalisme dan baris-berbaris yang tangguh.</p>
+                </div>
+                <div class="extrah-card">
+                    <i class="fas fa-microscope"></i>
+                    <h4>SAINS</h4>
+                    <p>Olimpiade IPA, Matematika, dan IPS.</p>
+                </div>
+                <div class="extrah-card">
+                    <i class="fas fa-futbol"></i>
+                    <h4>Futsal</h4>
+                    <p>Latihan teknik bermain futsal, kerja sama tim, dan sportivitas.</p>
+                </div>
+                <div class="extrah-card">
+                    <i class="fas fa-child"></i>
+                    <h4>Seni Tari</h4>
+                    <p>Latihan gerak tari tradisional dan kreasi untuk mengembangkan bakat, kreativitas, serta kecintaan terhadap budaya.</p>
+                </div>
+                <div class="extrah-card">
+                    <i class="fas fa-drum"></i>
+                    <h4>Hadroh</h4>
+                    <p>Latihan seni musik Islami melalui rebana, shalawat, dan lantunan pujian kepada Nabi Muhammad SAW.</p>
+                </div>
+                <div class="extrah-card">
+                    <i class="fas fa-microphone"></i>
+                    <h4>Nasyid</h4>
+                    <p>Latihan vokal dan harmonisasi suara melalui lantunan lagu-lagu Islami yang penuh pesan kebaikan.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SARANA & PRASARANA -->
+    <section id="sarana" class="section bg-light">
+        <div class="container">
+            <div class="section-title">
+                <h2>Sarana & Prasarana</h2>
+                <p>Fasilitas pendukung kegiatan belajar mengajar yang representatif</p>
+            </div>
+            <div class="grid-3">
+                <div class="facility-card">
+                    <img src="kelas.jpeg" alt="Ruang Kelas">
+                    <div class="facility-body">
+                        <h3>Ruang Kelas Nyaman</h3>
+                        <p>Dilengkapi pencahayaan optimal, kipas angin, dan meubelair yang baik untuk kenyamanan belajar.</p>
+                    </div>
+                </div>
+                <div class="facility-card">
+                    <img src="perpus.jpeg" alt="Perpustakaan">
+                    <div class="facility-body">
+                        <h3>Perpustakaan Madrasah</h3>
+                        <p>Koleksi buku pelajaran lengkap, referensi agama, fiksi, dan ruang baca yang kondusif.</p>
+                    </div>
+                </div>
+                <div class="facility-card">
+                    <img src="masjid.jpeg" alt="Masjid">
+                    <div class="facility-body">
+                        <h3>Masjid Nurul Iman</h3>
+                        <p>Pusat pembinaan ibadah harian, sholat berjamaah, tadarus, dan kajian keislaman siswa.</p>
+                    </div>
+                </div>
+                <div class="facility-card">
+                    <img src="lab.jpeg" alt="Labkom">
+                    <div class="facility-body">
+                        <h3>Lab Komputer</h3>
+                        <p>Fasilitas pembelajaran komputer untuk meningkatkan keterampilan teknologi dan literasi digital murid.</p>
+                    </div>
+                </div>
+                <div class="facility-card">
+                    <img src="koperasi.jpeg" alt="Koperasi">
+                    <div class="facility-body">
+                        <h3>Koperasi Madrasah</h3>
+                        <p>Tempat penyediaan kebutuhan sekolah dan perlengkapan belajar bagi murid serta warga madrasah.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BERITA & GALERI -->
+    <section id="berita" class="section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Berita Terbaru & Galeri Kegiatan</h2>
+                <p>Informasi terkini dan dokumentasi aktivitas madrasah</p>
+            </div>
+
+            <!-- TAB NAVIGATION -->
+            <div class="content-tabs">
+                <button class="tab-btn active" data-tab="news-tab">Berita Madrasah</button>
+                <button class="tab-btn" data-tab="gallery-tab">Galeri Kegiatan</button>
+            </div>
+
+            <!-- NEWS CONTAINER -->
+            <div id="news-tab" class="tab-content active">
+                <div class="grid-3" id="news-container">
+                    <div class="empty-state">
+                        <i class="fas fa-newspaper"></i>
+                        <p>Belum ada berita yang dipublikasikan.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GALLERY CONTAINER -->
+            <div id="gallery-tab" class="tab-content">
+                <div class="grid-4" id="gallery-container">
+                    <div class="empty-state">
+                        <i class="fas fa-images"></i>
+                        <p>Belum ada foto galeri yang diunggah.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PMBM SECTION -->
+    <section id="pmbm" class="section pmbm-section">
+        <div class="container">
+            <div class="pmbm-box">
+                <h2>Penerimaan Murid Baru Madrasah (PMBM) 2026/2027</h2>
+                <p>Mari bergabung bersama MTsS Nurul Iman Rejo Agung. Pendaftaran dibuka untuk lulusan SD/MI sederajat.</p>
+                <div class="pmbm-steps">
+                    <div class="step"><span>1</span><p>Pendaftaran Online/Offline</p></div>
+                    <div class="step"><span>2</span><p>Pemeriksaan Berkas</p></div>
+                    <div class="step"><span>3</span><p>Daftar Ulang</p></div>
+                </div>
+                <a href="https://forms.gle/54WCX9H59w7vysTo7" target="_blank" class="btn-gold"><i class="fas fa-globe"></i> Daftar Online</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- KONTAK SECTION -->
+    <section id="kontak" class="section bg-light">
+        <div class="container">
+            <div class="section-title">
+                <h2>Hubungi Kami</h2>
+                <p>Lokasi dan sarana komunikasi resmi madrasah</p>
+            </div>
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <div class="info-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h4>Alamat Madrasah</h4>
+                            <p>Jl. Raya Protokol Desa Rejo Agung, Kec. Tegineneng, Kabupaten Pesawaran, Lampung</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-phone-alt"></i>
+                        <div>
+                            <h4>Telepon / WhatsApp</h4>
+                            <p>085273496299</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h4>Email Resmi</h4>
+                            <p>mtsnurulimanrejoagung@gmail.com</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-form">
+                    <form id="contactForm" onsubmit="sendWhatsApp(event)">
+                        <h3>Kirim Pesan</h3>
+                        <div class="form-group">
+                            <input type="text" id="sender-name" placeholder="Nama Lengkap" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea id="sender-message" rows="4" placeholder="Tulis pesan atau pertanyaan..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn-primary"><i class="fab fa-whatsapp"></i> Kirim Pesan via WhatsApp</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container footer-grid">
+            <div class="footer-col">
+                <div class="logo" style="margin-bottom: 15px;">
+                    <img src="logo.jpeg" alt="Logo MTsS Nurul Iman" style="width: 50px; height: 50px; object-fit: contain; border-radius: 8px; margin-right: 12px;">
+                    <div class="logo-text">
+                        <h1 style="color: white;">MTsS NURUL IMAN</h1>
+                        <p style="color: var(--light-blue);">Rejo Agung</p>
+                    </div>
+                </div>
+                <p>Mencetak generasi Islami yang cerdas, berakhlak mulia, dan siap bersaing di era digital.</p>
+            </div>
+            <div class="footer-col">
+                <h3>Menu Cepat</h3>
+                <ul>
+                    <li><a href="#beranda">Beranda</a></li>
+                    <li><a href="#profil">Profil Madrasah</a></li>
+                    <li><a href="#akademik">Akademik</a></li>
+                    <li><a href="#berita">Berita Terbaru</a></li>
+                    <li><a href="admin.html" target="_blank">Login Admin</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Jam Kegiatan Belajar Mengajar</h3>
+                <p>Senin - Kamis: 07.15 - 13.50 WIB</p>
+                <p>Jumat: 07.15 - 11.00 WIB</p>
+                <p>Sabtu: 07.15 - 11.30 WIB</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 MTsS Nurul Iman Rejo Agung. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Main Script -->
+    <script src="script.js"></script>
+</body>
+</html>
