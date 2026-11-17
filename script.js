@@ -1,40 +1,17 @@
-// IndexedDB Helper untuk mengambil gambar dari database lokal
-const DB_NAME = "MtsNurulImanDB";
-const STORE_NAME = "mediaStore";
-const DB_VERSION = 1;
-
-function openDatabase() {
-    return new Promise((resolve, reject) => {
-        const request = indexedDB.open(DB_NAME, DB_VERSION);
-        request.onerror = () => reject(request.error);
-        request.onsuccess = () => resolve(request.result);
-        request.onupgradeneeded = (event) => {
-            const db = event.target.result;
-            if (!db.objectStoreNames.contains(STORE_NAME)) {
-                db.createObjectStore(STORE_NAME);
-            }
-        };
-    });
-}
-
-async function getImageFromDB(key) {
+// Mengambil data berita & galeri dari file data.json
+async function fetchSiteData() {
     try {
-        const db = await openDatabase();
-        return new Promise((resolve, reject) => {
-            const transaction = db.transaction(STORE_NAME, "readonly");
-            const store = transaction.objectStore(STORE_NAME);
-            const request = store.get(key);
-            request.onsuccess = () => resolve(request.result);
-            request.onerror = () => reject(request.error);
-        });
-    } catch (e) {
-        console.error("Error reading image from DB:", e);
-        return null;
+        const response = await fetch("data.json?t=" + Date.now());
+        if (!response.ok) throw new Error("Gagal mengambil data.json");
+        return await response.json();
+    } catch (error) {
+        console.error("Error loading data.json:", error);
+        return { news: [], gallery: [] };
     }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    // Mobile Menu Toggle (Tombol Hamburger)
+    // Mobile Menu Toggle
     const menuBtn = document.getElementById("menuBtn");
     const navbar = document.getElementById("navbar");
 
@@ -44,39 +21,29 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Dropdown Handling (Desktop Hover & Mobile Click)
+    // Dropdown Handling
     const dropdowns = document.querySelectorAll('.dropdown');
-    
     dropdowns.forEach(dropdown => {
         const toggleLink = dropdown.querySelector(':scope > a');
-
         dropdown.addEventListener('mouseenter', () => {
-            if (window.innerWidth > 992) {
-                dropdown.classList.add('active');
-            }
+            if (window.innerWidth > 992) dropdown.classList.add('active');
         });
         dropdown.addEventListener('mouseleave', () => {
-            if (window.innerWidth > 992) {
-                dropdown.classList.remove('active');
-            }
+            if (window.innerWidth > 992) dropdown.classList.remove('active');
         });
-
         toggleLink.addEventListener('click', function(e) {
             if (window.innerWidth <= 992) {
-                e.preventDefault(); 
-                e.stopPropagation(); 
+                e.preventDefault();
+                e.stopPropagation();
                 dropdown.classList.toggle('active');
             }
         });
     });
 
-    // Otomatis menutup menu utama saat link diklik
     const allNavLinks = document.querySelectorAll('.navbar a');
     allNavLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            if (window.innerWidth <= 992 && this.parentElement.classList.contains('dropdown')) {
-                return;
-            }
+        link.addEventListener('click', function() {
+            if (window.innerWidth <= 992 && this.parentElement.classList.contains('dropdown')) return;
             if (navbar) navbar.classList.remove('active');
             dropdowns.forEach(d => d.classList.remove('active'));
         });
@@ -88,34 +55,26 @@ document.addEventListener("DOMContentLoaded", () => {
         btn.addEventListener("click", () => {
             document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
             document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
-            
             btn.classList.add("active");
             const target = document.getElementById(btn.getAttribute("data-tab"));
             if (target) target.classList.add("active");
         });
     });
 
-    // Load Dynamic News & Gallery
-    loadPublicNews();
-    loadPublicGallery();
-
-    // Contact form submit simulation
-    const contactForm = document.getElementById("contactForm");
-    if (contactForm) {
-        contactForm.addEventListener("submit", (e) => {
-            e.preventDefault();
-            alert("Pesan Anda berhasil dikirim! Terima kasih telah menghubungi MTsS Nurul Iman Rejo Agung.");
-            contactForm.reset();
-        });
-    }
+    // Muat Berita & Galeri dari data.json
+    loadPublicContent();
 });
 
-// Render Berita Publik (Membatasi 3 teratas di beranda, menampilkan semua di berita.html)
-async function loadPublicNews() {
+async function loadPublicContent() {
+    const data = await fetchSiteData();
+    renderPublicNews(data.news || []);
+    renderPublicGallery(data.gallery || []);
+}
+
+function renderPublicNews(newsList) {
     const container = document.getElementById("news-container");
     if (!container) return;
 
-    const newsList = JSON.parse(localStorage.getItem("mts_news")) || [];
     const publishedNews = newsList.filter(item => item.status === "published");
 
     if (publishedNews.length === 0) {
@@ -133,13 +92,7 @@ async function loadPublicNews() {
 
     container.innerHTML = "";
     for (const item of displayedNews) {
-        let imgSrc = "https://images.unsplash.com/photo-1585829365295-ab7cd400c167?q=80&w=600&auto=format&fit=crop";
-        if (item.imageKey) {
-            const dbImg = await getImageFromDB(item.imageKey);
-            if (dbImg) {
-                imgSrc = URL.createObjectURL(dbImg);
-            }
-        }
+        const imgSrc = item.image || "https://images.unsplash.com/photo-1585829365295-ab7cd400c167?q=80&w=600&auto=format&fit=crop";
 
         const card = document.createElement("div");
         card.className = "news-card";
@@ -149,7 +102,7 @@ async function loadPublicNews() {
                 <div class="news-meta"><i class="far fa-calendar-alt"></i> ${item.date} | <span>${item.category}</span></div>
                 <h3>${item.title}</h3>
                 <p>${item.content.substring(0, 90)}...</p>
-                <a href="read.html?id=${item.id}" target="_blank" style="display: inline-block; margin-top: 12px; color: var(--blue); font-weight: 600; font-size: 13px; text-decoration: none;">
+                <a href="read.html?id=${item.id}" style="display: inline-block; margin-top: 12px; color: var(--blue); font-weight: 600; font-size: 13px; text-decoration: none;">
                     Baca Selengkapnya <i class="fas fa-arrow-right" style="font-size: 11px;"></i>
                 </a>
             </div>
@@ -173,12 +126,9 @@ async function loadPublicNews() {
     }
 }
 
-// Render Galeri Publik
-async function loadPublicGallery() {
+function renderPublicGallery(galleryList) {
     const container = document.getElementById("gallery-container");
     if (!container) return;
-
-    const galleryList = JSON.parse(localStorage.getItem("mts_gallery")) || [];
 
     if (galleryList.length === 0) {
         container.innerHTML = `
@@ -192,13 +142,7 @@ async function loadPublicGallery() {
 
     container.innerHTML = "";
     for (const item of galleryList) {
-        let imgSrc = "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?q=80&w=600&auto=format&fit=crop";
-        if (item.imageKey) {
-            const dbImg = await getImageFromDB(item.imageKey);
-            if (dbImg) {
-                imgSrc = URL.createObjectURL(dbImg);
-            }
-        }
+        const imgSrc = item.image || "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?q=80&w=600&auto=format&fit=crop";
 
         const card = document.createElement("div");
         card.className = "gallery-card";
@@ -217,17 +161,13 @@ function sendWhatsApp(event) {
     event.preventDefault();
     const name = document.getElementById('sender-name').value;
     const message = document.getElementById('sender-message').value;
+    const phoneNumber = "6285273496299";
 
-    // Masukkan nomor WhatsApp Admin (Gunakan format 62 di depan, contoh: 6281234567890)
-    const phoneNumber = "6285273496299"; 
-
-    // Format teks pesan yang akan otomatis terkirim
     const text = encodeURIComponent(
         `*Pesan Baru dari Website Madrasah*\n\n` +
         `👤 *Nama:* ${name}\n\n` +
         `💬 *Pesan:* \n${message}`
     );
 
-    // Membuka WhatsApp
     window.open(`https://wa.me/${phoneNumber}?text=${text}`, '_blank');
 }
