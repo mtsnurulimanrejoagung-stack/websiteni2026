@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detail Berita - MTsS Nurul Iman Rejo Agung</title>
-    <!-- Google Fonts & Font Awesome -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
@@ -86,11 +85,11 @@
         </div>
     </div>
 
-    <!-- HEADER MINIMALIS (LOGO + TOMBOL KEMBALI) -->
+    <!-- HEADER MINIMALIS -->
     <header class="header">
         <div class="container nav-container" style="display: flex; justify-content: space-between; align-items: center;">
             <a href="index.html" class="logo">
-                <img src="logo.jpeg" alt="Logo MTsS Nurul Iman" style="width: 50px; height: 50px; object-fit: contain; border-radius: 8px; margin-right: 12px;
+                <img src="logo.jpeg" alt="Logo MTsS Nurul Iman" style="width: 50px; height: 50px; object-fit: contain; border-radius: 8px; margin-right: 12px;">
                 <div class="logo-text">
                     <h1>MTsS NURUL IMAN</h1>
                     <p>Rejo Agung</p>
@@ -108,7 +107,7 @@
             <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Kembali ke Beranda</a>
             
             <div id="news-content-box">
-                <p style="text-align: center; color: #94A3B8; padding: 40px;">Memuat berita...</p>
+                <p style="text-align: center; color: #94A3B8; padding: 40px;"><i class="fas fa-spinner fa-spin"></i> Memuat berita...</p>
             </div>
         </div>
     </div>
@@ -122,64 +121,45 @@
         </div>
     </footer>
 
-    <!-- SCRIPT DETAIL BERITA -->
-    <script>
-        const DB_NAME = "MtsNurulImanDB";
-        const STORE_NAME = "mediaStore";
-        const DB_VERSION = 1;
-
-        function openDatabase() {
-            return new Promise((resolve, reject) => {
-                const request = indexedDB.open(DB_NAME, DB_VERSION);
-                request.onerror = () => reject(request.error);
-                request.onsuccess = () => resolve(request.result);
-            });
-        }
-
-        async function getImageFromDB(key) {
-            try {
-                const db = await openDatabase();
-                return new Promise((resolve, reject) => {
-                    const transaction = db.transaction(STORE_NAME, "readonly");
-                    const store = transaction.objectStore(STORE_NAME);
-                    const request = store.get(key);
-                    request.onsuccess = () => resolve(request.result);
-                    request.onerror = () => reject(request.error);
-                });
-            } catch (e) {
-                return null;
-            }
-        }
+    <!-- SCRIPT DETAIL BERITA DARI FIREBASE -->
+    <script type="module">
+        import { db } from "./firebase-config.js";
+        import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         document.addEventListener("DOMContentLoaded", async () => {
             const urlParams = new URLSearchParams(window.location.search);
             const newsId = urlParams.get("id");
             const box = document.getElementById("news-content-box");
 
-            const newsList = JSON.parse(localStorage.getItem("mts_news")) || [];
-            const article = newsList.find(item => item.id == newsId);
-
-            if (!article) {
-                box.innerHTML = `<h3>Berita Tidak Ditemukan</h3><p>Maaf, berita yang Anda cari mungkin telah dihapus atau tidak tersedia.</p>`;
+            if (!newsId) {
+                box.innerHTML = `<h3>Berita Tidak Ditemukan</h3><p>ID berita tidak valid.</p>`;
                 return;
             }
 
-            let imgSrc = "https://images.unsplash.com/photo-1585829365295-ab7cd400c167?q=80&w=800&auto=format&fit=crop";
-            if (article.imageKey) {
-                const dbImg = await getImageFromDB(article.imageKey);
-                if (dbImg) {
-                    imgSrc = URL.createObjectURL(dbImg);
+            try {
+                const docRef = doc(db, "mts_news", newsId);
+                const docSnap = await getDoc(docRef);
+
+                if (!docSnap.exists()) {
+                    box.innerHTML = `<h3>Berita Tidak Ditemukan</h3><p>Maaf, berita yang Anda cari mungkin telah dihapus atau tidak tersedia.</p>`;
+                    return;
                 }
+
+                const article = docSnap.data();
+                const imgSrc = article.imageData || "https://images.unsplash.com/photo-1585829365295-ab7cd400c167?q=80&w=800&auto=format&fit=crop";
+
+                document.title = article.title + " - MTsS Nurul Iman Rejo Agung";
+
+                box.innerHTML = `
+                    <div class="news-meta"><i class="far fa-calendar-alt"></i> ${article.date} | <span>${article.category}</span></div>
+                    <h1>${article.title}</h1>
+                    <img src="${imgSrc}" alt="${article.title}" class="news-detail-img">
+                    <div class="news-detail-content">${article.content}</div>
+                `;
+            } catch (error) {
+                console.error("Error fetching article:", error);
+                box.innerHTML = `<h3>Terjadi Kesalahan</h3><p>Gagal memuat berita dari server.</p>`;
             }
-
-            document.title = article.title + " - MTsS Nurul Iman Rejo Agung";
-
-            box.innerHTML = `
-                <div class="news-meta"><i class="far fa-calendar-alt"></i> ${article.date} | <span>${article.category}</span></div>
-                <h1>${article.title}</h1>
-                <img src="${imgSrc}" alt="${article.title}" class="news-detail-img">
-                <div class="news-detail-content">${article.content}</div>
-            `;
         });
     </script>
 </body>
