@@ -4,34 +4,73 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detail Berita - MTsS Nurul Iman Rejo Agung</title>
+    <!-- Google Fonts & Font Awesome -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+    
     <style>
         .news-detail-container {
-            max-width: 800px; margin: 40px auto; background: var(--white);
-            padding: 40px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            max-width: 800px;
+            margin: 40px auto;
+            background: var(--white);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
         }
-        #news-content-box h1 { font-size: 28px; color: var(--navy); margin: 15px 0; line-height: 1.4; }
+        
+        #news-content-box h1 {
+            font-size: 28px;
+            color: var(--navy);
+            margin: 15px 0;
+            line-height: 1.4;
+        }
+
         .news-detail-img {
-            width: 100%; max-height: 450px; object-fit: contain;
-            background: #f1f5f9; border-radius: 8px; margin: 25px 0;
+            width: 100%;
+            max-height: 400px;
+            object-fit: contain;
+            background: #f1f5f9;
+            border-radius: 8px;
+            margin: 25px 0;
         }
-        .news-detail-content { font-size: 15px; color: var(--gray-dark); line-height: 1.8; white-space: pre-line; }
+        .news-detail-content {
+            font-size: 15px;
+            color: var(--gray-dark);
+            line-height: 1.8;
+            white-space: pre-line;
+        }
         .back-btn {
-            display: inline-flex; align-items: center; gap: 8px; color: var(--blue);
-            text-decoration: none; font-weight: 600; margin-bottom: 20px; font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--blue);
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 20px;
+            font-size: 14px;
         }
-        .back-btn:hover { text-decoration: underline; }
+        .back-btn:hover {
+            text-decoration: underline;
+        }
+
         @media (max-width: 768px) {
-            .news-detail-container { padding: 20px; margin: 20px 15px; }
-            #news-content-box h1 { font-size: 20px; }
-            .news-detail-content { font-size: 14px; }
+            .news-detail-container {
+                padding: 20px;
+                margin: 20px 15px;
+            }
+            #news-content-box h1 {
+                font-size: 20px;
+            }
+            .news-detail-content {
+                font-size: 14px;
+            }
         }
     </style>
 </head>
 <body style="background-color: var(--gray-light);">
 
+    <!-- TOP BAR -->
     <div class="top-bar">
         <div class="container top-bar-container">
             <div class="top-info">
@@ -47,6 +86,7 @@
         </div>
     </div>
 
+    <!-- HEADER MINIMALIS (LOGO + TOMBOL KEMBALI) -->
     <header class="header">
         <div class="container nav-container" style="display: flex; justify-content: space-between; align-items: center;">
             <a href="index.html" class="logo">
@@ -62,15 +102,18 @@
         </div>
     </header>
 
+    <!-- KONTEN UTAMA BERITA -->
     <div class="container">
         <div class="news-detail-container">
             <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Kembali ke Beranda</a>
+            
             <div id="news-content-box">
                 <p style="text-align: center; color: #94A3B8; padding: 40px;">Memuat berita...</p>
             </div>
         </div>
     </div>
 
+    <!-- FOOTER -->
     <footer class="footer" style="margin-top: 60px;">
         <div class="container">
             <div class="footer-bottom">
@@ -79,23 +122,45 @@
         </div>
     </footer>
 
-    <script>
+    <!-- SCRIPT DETAIL BERITA FIRESTORE -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDCokgJrrjQk7YTTw2iu4-p5S6SvbCCV0g",
+            authDomain: "websiteni2026.firebaseapp.com",
+            projectId: "websiteni2026",
+            storageBucket: "websiteni2026.firebasestorage.app",
+            messagingSenderId: "596706822852",
+            appId: "1:596706822852:web:febe256e797e71ca0cd791",
+            measurementId: "G-Z1XKB3K9L2"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
         document.addEventListener("DOMContentLoaded", async () => {
             const urlParams = new URLSearchParams(window.location.search);
             const newsId = urlParams.get("id");
             const box = document.getElementById("news-content-box");
 
-            try {
-                const res = await fetch("data.json?t=" + Date.now());
-                const data = await res.json();
-                const article = (data.news || []).find(item => item.id == newsId);
+            if (!newsId) {
+                box.innerHTML = `<h3>Berita Tidak Ditemukan</h3><p>ID berita tidak valid.</p>`;
+                return;
+            }
 
-                if (!article) {
-                    box.innerHTML = `<h3>Berita Tidak Ditemukan</h3><p>Maaf, berita yang Anda cari mungkin telah dihapus atau belum dipublikasikan.</p>`;
+            try {
+                const docSnap = await getDoc(doc(db, "news", newsId));
+
+                if (!docSnap.exists()) {
+                    box.innerHTML = `<h3>Berita Tidak Ditemukan</h3><p>Maaf, berita yang Anda cari mungkin telah dihapus atau tidak tersedia.</p>`;
                     return;
                 }
 
+                const article = docSnap.data();
                 const imgSrc = article.image || "https://images.unsplash.com/photo-1585829365295-ab7cd400c167?q=80&w=800&auto=format&fit=crop";
+
                 document.title = article.title + " - MTsS Nurul Iman Rejo Agung";
 
                 box.innerHTML = `
@@ -105,7 +170,7 @@
                     <div class="news-detail-content">${article.content}</div>
                 `;
             } catch (e) {
-                box.innerHTML = `<h3>Gagal Memuat Berita</h3><p>Terjadi kesalahan saat membaca data berita.</p>`;
+                box.innerHTML = `<h3>Gagal Memuat Berita</h3><p>Terjadi kesalahan koneksi saat memuat berita.</p>`;
             }
         });
     </script>
