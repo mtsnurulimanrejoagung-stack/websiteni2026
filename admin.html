@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - MTsS Nurul Iman Rejo Agung</title>
+    <title>Login & Admin Dashboard - MTsS Nurul Iman Rejo Agung</title>
+    <!-- Google Fonts & Font Awesome -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
         :root {
             --navy: #0A192F;
@@ -21,119 +23,400 @@
             --success: #10B981;
             --transition: all 0.3s ease;
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        body { background-color: var(--gray-light); color: var(--gray-dark); min-height: 100vh; }
 
-        /* LOGIN */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--gray-light);
+            color: var(--gray-dark);
+            min-height: 100vh;
+        }
+
+        /* LOGIN CONTAINER */
         #login-screen {
-            display: flex; align-items: center; justify-content: center;
-            min-height: 100vh; background: linear-gradient(135deg, var(--navy), var(--navy-light)); padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--navy), var(--navy-light));
+            padding: 20px;
         }
-        .login-card {
-            background: var(--white); padding: 40px; border-radius: 12px;
-            width: 100%; max-width: 400px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); text-align: center;
-        }
-        .login-card i { font-size: 48px; color: var(--gold); margin-bottom: 15px; }
-        .login-card h2 { font-size: 20px; color: var(--navy); margin-bottom: 5px; }
-        .login-card p { font-size: 13px; color: #64748B; margin-bottom: 25px; }
-        .login-error { background: #FE2C5520; color: var(--danger); font-size: 12px; padding: 10px; border-radius: 6px; margin-bottom: 15px; display: none; }
 
-        /* DASHBOARD */
-        #admin-app { display: none; min-height: 100vh; }
-        .admin-layout { display: flex; min-height: 100vh; }
-        .sidebar {
-            width: 260px; background-color: var(--navy); color: var(--white);
-            position: fixed; top: 0; left: 0; height: 100%; display: flex; flex-direction: column; z-index: 100;
+        .login-card {
+            background: var(--white);
+            padding: 40px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
         }
+
+        .login-card i {
+            font-size: 48px;
+            color: var(--gold);
+            margin-bottom: 15px;
+        }
+
+        .login-card h2 {
+            font-size: 20px;
+            color: var(--navy);
+            margin-bottom: 5px;
+        }
+
+        .login-card p {
+            font-size: 13px;
+            color: #64748B;
+            margin-bottom: 25px;
+        }
+
+        .login-error {
+            background: #FE2C5520;
+            color: var(--danger);
+            font-size: 12px;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            display: none;
+        }
+
+        /* DASHBOARD LAYOUT (TERSEMBUNYI SEBELUM LOGIN) */
+        #admin-app {
+            display: none;
+            min-height: 100vh;
+        }
+
+        .admin-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR NAVIGASI */
+        .sidebar {
+            width: 260px;
+            background-color: var(--navy);
+            color: var(--white);
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+            box-shadow: 4px 0 15px rgba(0,0,0,0.05);
+            transition: var(--transition);
+        }
+
         .sidebar-brand {
-            padding: 25px 20px; background: rgba(0,0,0,0.2); display: flex; align-items: center; gap: 12px;
+            padding: 25px 20px;
+            background: rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 12px;
             border-bottom: 1px solid rgba(255,255,255,0.1);
         }
-        .sidebar-brand h2 { font-size: 16px; font-weight: 700; line-height: 1.3; }
-        .sidebar-menu { list-style: none; padding: 20px 0; flex-grow: 1; }
+
+        .sidebar-brand i {
+            font-size: 24px;
+            color: var(--gold);
+        }
+
+        .sidebar-brand h2 {
+            font-size: 16px;
+            font-weight: 700;
+            line-height: 1.3;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 20px 0;
+            flex-grow: 1;
+        }
+
         .sidebar-menu li a {
-            display: flex; align-items: center; gap: 15px; padding: 12px 25px;
-            color: #94A3B8; text-decoration: none; font-size: 14px; font-weight: 500; transition: var(--transition); cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px 25px;
+            color: #94A3B8;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: var(--transition);
+            cursor: pointer;
         }
-        .sidebar-menu li a:hover, .sidebar-menu li a.active {
-            color: var(--white); background-color: var(--blue); border-left: 4px solid var(--gold);
-        }
-        .sidebar-menu li a i { font-size: 18px; width: 20px; text-align: center; }
 
-        .main-content { margin-left: 260px; flex-grow: 1; padding: 30px; width: calc(100% - 260px); }
+        .sidebar-menu li a:hover, 
+        .sidebar-menu li a.active {
+            color: var(--white);
+            background-color: var(--blue);
+            border-left: 4px solid var(--gold);
+        }
+
+        .sidebar-menu li a i {
+            font-size: 18px;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* KONTEN UTAMA */
+        .main-content {
+            margin-left: 260px;
+            flex-grow: 1;
+            padding: 30px;
+            width: calc(100% - 260px);
+            transition: var(--transition);
+        }
+
         .top-header {
-            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;
-            background: var(--white); padding: 20px 30px; border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.03); margin-bottom: 25px;
-        }
-        .top-header h1 { font-size: 22px; color: var(--navy); font-weight: 700; }
-
-        /* SYNC BANNER */
-        .sync-banner {
-            background: #EFF6FF; border: 1px solid #BFDBFE; border-left: 5px solid var(--blue);
-            padding: 20px; border-radius: 10px; margin-bottom: 25px;
-            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;
-        }
-        .sync-banner h4 { color: var(--navy); font-size: 15px; margin-bottom: 4px; }
-        .sync-banner p { font-size: 13px; color: #475569; }
-        .sync-actions { display: flex; gap: 10px; flex-wrap: wrap; }
-        .btn-export {
-            background-color: var(--success); color: var(--white); border: none; padding: 10px 18px;
-            border-radius: 8px; font-weight: 600; font-size: 13px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;
-        }
-        .btn-export:hover { opacity: 0.9; }
-        .btn-import {
-            background-color: var(--navy); color: var(--white); border: none; padding: 10px 18px;
-            border-radius: 8px; font-weight: 600; font-size: 13px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--white);
+            padding: 20px 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            margin-bottom: 30px;
         }
 
-        .admin-section { display: none; }
-        .admin-section.active { display: block; }
-        .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 25px; margin-bottom: 30px; }
+        .top-header h1 {
+            font-size: 22px;
+            color: var(--navy);
+            font-weight: 700;
+        }
+
+        .admin-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--navy);
+        }
+
+        .admin-profile i {
+            color: var(--blue);
+        }
+
+        /* SECTION / TAB KONTEN */
+        .admin-section {
+            display: none;
+        }
+
+        .admin-section.active {
+            display: block;
+        }
+
+        /* STATS CARDS */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
         .stat-card {
-            background: var(--white); padding: 25px; border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.03); display: flex; align-items: center; gap: 20px; border-left: 5px solid var(--blue);
+            background: var(--white);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            border-left: 5px solid var(--blue);
         }
+
         .stat-icon {
-            width: 60px; height: 60px; background: rgba(37,99,235,0.1); color: var(--blue);
-            display: flex; align-items: center; justify-content: center; border-radius: 10px; font-size: 28px;
+            width: 60px;
+            height: 60px;
+            background: rgba(37,99,235,0.1);
+            color: var(--blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            font-size: 28px;
         }
-        .stat-info h3 { font-size: 28px; color: var(--navy); font-weight: 700; }
-        .stat-info p { font-size: 14px; color: #64748B; }
 
-        .card-form { background: var(--white); padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
-        .card-form h3 { font-size: 18px; color: var(--navy); margin-bottom: 20px; border-bottom: 2px solid var(--gray-light); padding-bottom: 10px; }
-        .form-group { margin-bottom: 20px; text-align: left; }
-        .form-group label { display: block; font-size: 13px; font-weight: 600; color: var(--navy); margin-bottom: 8px; }
-        .form-group input, .form-group textarea, .form-group select {
-            width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 14px; outline: none;
+        .stat-info h3 {
+            font-size: 28px;
+            color: var(--navy);
+            font-weight: 700;
         }
-        .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: var(--blue); }
+
+        .stat-info p {
+            font-size: 14px;
+            color: #64748B;
+        }
+
+        /* FORM KARTU & TABEL */
+        .card-form {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+        }
+
+        .card-form h3 {
+            font-size: 18px;
+            color: var(--navy);
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--gray-light);
+            padding-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 8px;
+        }
+
+        .form-group input, 
+        .form-group textarea, 
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: 'Poppins', sans-serif;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus, 
+        .form-group textarea:focus, 
+        .form-group select:focus {
+            border-color: var(--blue);
+            box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+        }
+
         .btn-submit {
-            background-color: var(--blue); color: var(--white); border: none; padding: 12px 25px;
-            border-radius: 8px; font-weight: 600; font-size: 14px; cursor: pointer; width: 100%;
+            background-color: var(--blue);
+            color: var(--white);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: var(--transition);
+            width: 100%;
         }
-        .btn-submit:hover { background-color: var(--navy-light); }
 
-        .data-table { width: 100%; border-collapse: collapse; margin-top: 15px; background: var(--white); }
-        .data-table th, .data-table td { padding: 15px; text-align: left; font-size: 13px; border-bottom: 1px solid var(--border-color); }
-        .data-table th { background-color: var(--navy); color: var(--white); font-weight: 600; }
-        .btn-action { padding: 6px 12px; border-radius: 6px; border: none; font-size: 12px; font-weight: 600; cursor: pointer; }
-        .btn-danger { background-color: var(--danger); color: var(--white); }
+        .btn-submit:hover {
+            background-color: var(--navy-light);
+        }
 
+        .btn-submit:disabled {
+            background-color: #94A3B8;
+            cursor: not-allowed;
+        }
+
+        /* TABEL DATA */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            background: var(--white);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+        }
+
+        .data-table th, .data-table td {
+            padding: 15px;
+            text-align: left;
+            font-size: 13px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .data-table th {
+            background-color: var(--navy);
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        .data-table tr:hover {
+            background-color: var(--gray-light);
+        }
+
+        .btn-action {
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: none;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-danger {
+            background-color: var(--danger);
+            color: var(--white);
+        }
+
+        .btn-danger:hover {
+            opacity: 0.8;
+        }
+
+        /* RESPONSIF UNTUK HP & TABLET */
         @media (max-width: 992px) {
-            .admin-layout { flex-direction: column; display: block; }
-            .sidebar { width: 100%; position: relative; height: auto; }
-            .sidebar-menu { display: flex; flex-wrap: wrap; padding: 10px; gap: 5px; justify-content: center; }
-            .sidebar-menu li a { padding: 8px 12px; border-radius: 6px; font-size: 12px; background: rgba(255,255,255,0.05); border-left: none !important; }
-            .main-content { margin-left: 0; width: 100%; padding: 15px; }
-            .stats-grid { grid-template-columns: 1fr; }
+            .admin-layout {
+                flex-direction: column !important;
+                display: block !important;
+            }
+
+            .sidebar {
+                width: 100% !important;
+                position: relative !important;
+                height: auto !important;
+                box-shadow: none !important;
+            }
+
+            .sidebar-menu {
+                display: flex;
+                flex-wrap: wrap;
+                padding: 10px;
+                gap: 5px;
+                justify-content: center;
+            }
+
+            .sidebar-menu li a {
+                padding: 8px 12px;
+                border-radius: 6px;
+                font-size: 12px;
+                background: rgba(255,255,255,0.05);
+                border-left: none !important;
+            }
+
+            .main-content {
+                margin-left: 0 !important;
+                width: 100% !important;
+                padding: 15px !important;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr !important;
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- 1. LOGIN SCREEN -->
+    <!-- 1. HALAMAN LOGIN -->
     <div id="login-screen">
         <div class="login-card">
             <i class="fas fa-user-shield"></i>
@@ -152,17 +435,18 @@
                 <button type="submit" class="btn-submit">Masuk Dashboard</button>
             </form>
             <div style="margin-top: 20px;">
-                <a href="index.html" style="font-size: 13px; color: var(--blue); text-decoration: none;"><i class="fas fa-arrow-left"></i> Kembali ke Website Utama</a>
+                <a href="index.html" style="font-size: 13px; color: var(--light-blue); text-decoration: none;"><i class="fas fa-arrow-left"></i> Kembali ke Website Utama</a>
             </div>
         </div>
     </div>
 
-    <!-- 2. DASHBOARD ADMIN -->
+    <!-- 2. APLIKASI DASHBOARD ADMIN (TERLINDUNGI) -->
     <div id="admin-app">
         <div class="admin-layout">
+            <!-- SIDEBAR -->
             <div class="sidebar">
                 <div class="sidebar-brand">
-                    <img src="logo.jpeg" alt="Logo MTsS Nurul Iman" style="width: 45px; height: 45px; object-fit: contain; border-radius: 8px;">
+                    <img src="logo.jpeg" alt="Logo MTsS Nurul Iman" style="width: 50px; height: 50px; object-fit: contain; border-radius: 8px; margin-right: 12px;">
                     <h2>Admin MTsS Nurul Iman</h2>
                 </div>
                 <ul class="sidebar-menu">
@@ -171,32 +455,16 @@
                     <li><a class="nav-link" data-target="gallery-section"><i class="fas fa-images"></i> Upload Galeri</a></li>
                     <li><a class="nav-link" data-target="list-news-section"><i class="fas fa-list"></i> Daftar Berita</a></li>
                     <li><a class="nav-link" data-target="list-gallery-section"><i class="fas fa-photo-video"></i> Daftar Galeri</a></li>
-                    <li><a id="btnLogout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                    <li><a id="btnLogout"><i class="fas fa-sign-out-alt"></i> Logout / Keluar</a></li>
                 </ul>
             </div>
 
+            <!-- MAIN CONTENT -->
             <div class="main-content">
                 <div class="top-header">
                     <h1 id="page-title">Dashboard Pengelolaan</h1>
-                    <div style="font-size: 14px; font-weight: 600; color: var(--navy);">
-                        <i class="fas fa-user-shield" style="color: var(--blue);"></i> Administrator
-                    </div>
-                </div>
-
-                <!-- BANNER EXPORT/IMPORT JSON -->
-                <div class="sync-banner">
-                    <div>
-                        <h4><i class="fas fa-cloud-upload-alt"></i> Publikasi ke Semua Perangkat</h4>
-                        <p>Setelah menambah/menghapus berita atau foto, klik <strong>Download data.json</strong> lalu upload file tersebut ke hosting/GitHub.</p>
-                    </div>
-                    <div class="sync-actions">
-                        <input type="file" id="importJsonFile" accept=".json" style="display: none;">
-                        <button class="btn-import" onclick="document.getElementById('importJsonFile').click()">
-                            <i class="fas fa-file-import"></i> Muat Ulang data.json
-                        </button>
-                        <button class="btn-export" onclick="exportDataJson()">
-                            <i class="fas fa-download"></i> Download data.json
-                        </button>
+                    <div class="admin-profile">
+                        <i class="fas fa-user-shield"></i> Administrator Madrasah
                     </div>
                 </div>
 
@@ -219,13 +487,8 @@
                         </div>
                     </div>
                     <div class="card-form">
-                        <h3>Cara Kerja Update Berita (Mode JSON)</h3>
-                        <ol style="padding-left: 20px; font-size: 14px; color: #475569; line-height: 1.8;">
-                            <li>Tambahkan berita atau foto galeri baru melalui menu di samping.</li>
-                            <li>Klik tombol hijau <strong>Download data.json</strong> di bagian atas.</li>
-                            <li>Buka repositori GitHub / cPanel hosting kamu, lalu unggah file <code>data.json</code> yang baru diunduh untuk menggantikan file lama.</li>
-                            <li>Selesai! Semua pengunjung dari HP maupun laptop lain akan langsung melihat berita terbaru.</li>
-                        </ol>
+                        <h3>Selamat Datang di Panel Admin</h3>
+                        <p style="font-size: 14px; color: #64748B;">Gunakan menu navigasi di samping untuk mengelola berita, pengumuman, dan galeri foto madrasah secara online (real-time di semua perangkat).</p>
                     </div>
                 </div>
 
@@ -247,7 +510,7 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label>Pilih Gambar Berita (Otomatis dikompres)</label>
+                                <label>Pilih Gambar Berita</label>
                                 <input type="file" id="newsImageFile" accept="image/*" required>
                             </div>
                             <div class="form-group">
@@ -261,7 +524,7 @@
                                     <option value="draft">Simpan sebagai Draft</option>
                                 </select>
                             </div>
-                            <button type="submit" class="btn-submit"><i class="fas fa-save"></i> Simpan ke Daftar Berita</button>
+                            <button type="submit" id="btnSubmitNews" class="btn-submit"><i class="fas fa-paper-plane"></i> Publikasikan Berita</button>
                         </form>
                     </div>
                 </div>
@@ -276,14 +539,14 @@
                                 <input type="text" id="galleryTitle" placeholder="Contoh: Juara Lomba Pramuka" required>
                             </div>
                             <div class="form-group">
-                                <label>Pilih File Foto (Otomatis dikompres)</label>
+                                <label>Pilih File Foto</label>
                                 <input type="file" id="galleryImageFile" accept="image/*" required>
                             </div>
                             <div class="form-group">
                                 <label>Keterangan Singkat</label>
                                 <textarea id="galleryDesc" rows="3" placeholder="Keterangan singkat..." required></textarea>
                             </div>
-                            <button type="submit" class="btn-submit"><i class="fas fa-upload"></i> Simpan ke Daftar Galeri</button>
+                            <button type="submit" id="btnSubmitGallery" class="btn-submit"><i class="fas fa-upload"></i> Upload ke Galeri</button>
                         </form>
                     </div>
                 </div>
@@ -317,7 +580,6 @@
                             <table class="data-table">
                                 <thead>
                                     <tr>
-                                        <th>Preview</th>
                                         <th>Judul Foto</th>
                                         <th>Keterangan</th>
                                         <th>Aksi</th>
@@ -332,11 +594,27 @@
         </div>
     </div>
 
-    <script>
+    <!-- JAVASCRIPT AUTH & FIREBASE FIRESTORE -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDCokgJrrjQk7YTTw2iu4-p5S6SvbCCV0g",
+            authDomain: "websiteni2026.firebaseapp.com",
+            projectId: "websiteni2026",
+            storageBucket: "websiteni2026.firebasestorage.app",
+            messagingSenderId: "596706822852",
+            appId: "1:596706822852:web:febe256e797e71ca0cd791",
+            measurementId: "G-Z1XKB3K9L2"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
         const ADMIN_USER = "admin";
         const ADMIN_PASS = "nuruliman2026";
 
-        // Kompresi gambar menjadi Base64 ringan agar muat dan cepat di data.json
         function compressImageToBase64(file, maxWidth = 800, quality = 0.7) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
@@ -366,57 +644,23 @@
             });
         }
 
-        // Sinkronisasi awal dari data.json online jika localStorage masih kosong
-        async function syncInitialDataFromServer() {
-            try {
-                const res = await fetch("data.json?t=" + Date.now());
-                if (res.ok) {
-                    const data = await res.json();
-                    if (!localStorage.getItem("mts_news") && Array.isArray(data.news)) {
-                        localStorage.setItem("mts_news", JSON.stringify(data.news));
-                    }
-                    if (!localStorage.getItem("mts_gallery") && Array.isArray(data.gallery)) {
-                        localStorage.setItem("mts_gallery", JSON.stringify(data.gallery));
-                    }
-                    updateStats();
-                }
-            } catch (e) {
-                console.log("Membaca penyimpanan lokal browser.");
-            }
-        }
-
-        // Export ke file data.json
-        function exportDataJson() {
-            const news = JSON.parse(localStorage.getItem("mts_news")) || [];
-            const gallery = JSON.parse(localStorage.getItem("mts_gallery")) || [];
-            const payload = { news, gallery };
-
-            const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = "data.json";
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-        }
-
-        document.addEventListener("DOMContentLoaded", async () => {
-            if (sessionStorage.getItem("isAdminLoggedIn") === "true") {
-                await showAdminDashboard();
+        document.addEventListener("DOMContentLoaded", () => {
+            const isLogged = sessionStorage.getItem("isAdminLoggedIn");
+            if (isLogged === "true") {
+                showAdminDashboard();
             }
 
-            document.getElementById("loginForm").addEventListener("submit", async (e) => {
+            document.getElementById("loginForm").addEventListener("submit", (e) => {
                 e.preventDefault();
                 const u = document.getElementById("username").value.trim();
                 const p = document.getElementById("password").value.trim();
+                const errBox = document.getElementById("loginError");
 
                 if (u === ADMIN_USER && p === ADMIN_PASS) {
                     sessionStorage.setItem("isAdminLoggedIn", "true");
-                    await showAdminDashboard();
+                    showAdminDashboard();
                 } else {
-                    document.getElementById("loginError").style.display = "block";
+                    errBox.style.display = "block";
                 }
             });
 
@@ -425,39 +669,20 @@
                 window.location.reload();
             });
 
-            // Import manual file data.json
-            document.getElementById("importJsonFile").addEventListener("change", (e) => {
-                const file = e.target.files[0];
-                if (!file) return;
-                const reader = new FileReader();
-                reader.onload = (ev) => {
-                    try {
-                        const parsed = JSON.parse(ev.target.result);
-                        if (Array.isArray(parsed.news)) localStorage.setItem("mts_news", JSON.stringify(parsed.news));
-                        if (Array.isArray(parsed.gallery)) localStorage.setItem("mts_gallery", JSON.stringify(parsed.gallery));
-                        updateStats();
-                        renderAdminNews();
-                        renderAdminGallery();
-                        alert("Data dari data.json berhasil dimuat!");
-                    } catch (err) {
-                        alert("Format file data.json tidak valid!");
-                    }
-                };
-                reader.readAsText(file);
-            });
-
-            // Navigasi Tab Sidebar
             const navLinks = document.querySelectorAll(".sidebar-menu .nav-link");
             const sections = document.querySelectorAll(".admin-section");
+            const pageTitle = document.getElementById("page-title");
+
             navLinks.forEach(link => {
                 link.addEventListener("click", (e) => {
                     e.preventDefault();
                     navLinks.forEach(l => l.classList.remove("active"));
                     sections.forEach(s => s.classList.remove("active"));
+
                     link.classList.add("active");
                     const targetId = link.getAttribute("data-target");
                     document.getElementById(targetId).classList.add("active");
-                    document.getElementById("page-title").innerText = link.textContent.trim();
+                    pageTitle.innerText = link.textContent.trim();
 
                     if (targetId === "list-news-section") renderAdminNews();
                     if (targetId === "list-gallery-section") renderAdminGallery();
@@ -465,138 +690,182 @@
                 });
             });
 
-            // Simpan Berita
-            document.getElementById("newsForm").addEventListener("submit", async (e) => {
+            const newsForm = document.getElementById("newsForm");
+            newsForm.addEventListener("submit", async (e) => {
                 e.preventDefault();
-                const title = document.getElementById("newsTitle").value;
-                const category = document.getElementById("newsCategory").value;
-                const content = document.getElementById("newsContent").value;
-                const status = document.getElementById("newsStatus").value;
-                const fileInput = document.getElementById("newsImageFile");
+                const btn = document.getElementById("btnSubmitNews");
+                btn.disabled = true;
+                btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Menyimpan...`;
 
-                let imageBase64 = "";
-                if (fileInput.files.length > 0) {
-                    imageBase64 = await compressImageToBase64(fileInput.files[0]);
+                try {
+                    const title = document.getElementById("newsTitle").value;
+                    const category = document.getElementById("newsCategory").value;
+                    const content = document.getElementById("newsContent").value;
+                    const status = document.getElementById("newsStatus").value;
+                    const fileInput = document.getElementById("newsImageFile");
+
+                    let imageBase64 = "";
+                    if (fileInput.files.length > 0) {
+                        imageBase64 = await compressImageToBase64(fileInput.files[0]);
+                    }
+
+                    await addDoc(collection(db, "news"), {
+                        title,
+                        category,
+                        content,
+                        status,
+                        date: new Date().toLocaleDateString("id-ID", { day: 'numeric', month: 'long', year: 'numeric' }),
+                        image: imageBase64,
+                        createdAt: Date.now()
+                    });
+
+                    alert("Berita berhasil dipublikasikan ke seluruh perangkat!");
+                    newsForm.reset();
+                    updateStats();
+                } catch (err) {
+                    console.error(err);
+                    alert("Gagal menyimpan berita: " + err.message);
+                } finally {
+                    btn.disabled = false;
+                    btn.innerHTML = `<i class="fas fa-paper-plane"></i> Publikasikan Berita`;
                 }
-
-                const newsList = JSON.parse(localStorage.getItem("mts_news")) || [];
-                newsList.unshift({
-                    id: Date.now(),
-                    title,
-                    category,
-                    content,
-                    status,
-                    date: new Date().toLocaleDateString("id-ID", { day: 'numeric', month: 'long', year: 'numeric' }),
-                    image: imageBase64
-                });
-
-                localStorage.setItem("mts_news", JSON.stringify(newsList));
-                alert("Berita tersimpan! Jangan lupa klik tombol 'Download data.json' dan unggah ke hosting.");
-                e.target.reset();
-                updateStats();
             });
 
-            // Simpan Galeri
-            document.getElementById("galleryForm").addEventListener("submit", async (e) => {
+            const galleryForm = document.getElementById("galleryForm");
+            galleryForm.addEventListener("submit", async (e) => {
                 e.preventDefault();
-                const title = document.getElementById("galleryTitle").value;
-                const description = document.getElementById("galleryDesc").value;
-                const fileInput = document.getElementById("galleryImageFile");
+                const btn = document.getElementById("btnSubmitGallery");
+                btn.disabled = true;
+                btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Mengunggah...`;
 
-                let imageBase64 = "";
-                if (fileInput.files.length > 0) {
-                    imageBase64 = await compressImageToBase64(fileInput.files[0]);
+                try {
+                    const title = document.getElementById("galleryTitle").value;
+                    const description = document.getElementById("galleryDesc").value;
+                    const fileInput = document.getElementById("galleryImageFile");
+
+                    let imageBase64 = "";
+                    if (fileInput.files.length > 0) {
+                        imageBase64 = await compressImageToBase64(fileInput.files[0]);
+                    }
+
+                    await addDoc(collection(db, "gallery"), {
+                        title,
+                        description,
+                        image: imageBase64,
+                        createdAt: Date.now()
+                    });
+
+                    alert("Foto galeri berhasil diunggah ke seluruh perangkat!");
+                    galleryForm.reset();
+                    updateStats();
+                } catch (err) {
+                    console.error(err);
+                    alert("Gagal mengunggah foto: " + err.message);
+                } finally {
+                    btn.disabled = false;
+                    btn.innerHTML = `<i class="fas fa-upload"></i> Upload ke Galeri`;
                 }
-
-                const galleryList = JSON.parse(localStorage.getItem("mts_gallery")) || [];
-                galleryList.unshift({
-                    id: Date.now(),
-                    title,
-                    description,
-                    image: imageBase64
-                });
-
-                localStorage.setItem("mts_gallery", JSON.stringify(galleryList));
-                alert("Foto galeri tersimpan! Jangan lupa klik tombol 'Download data.json' dan unggah ke hosting.");
-                e.target.reset();
-                updateStats();
             });
         });
 
-        async function showAdminDashboard() {
+        function showAdminDashboard() {
             document.getElementById("login-screen").style.display = "none";
             document.getElementById("admin-app").style.display = "block";
-            await syncInitialDataFromServer();
             updateStats();
         }
 
-        function updateStats() {
-            const newsList = JSON.parse(localStorage.getItem("mts_news")) || [];
-            const galleryList = JSON.parse(localStorage.getItem("mts_gallery")) || [];
-            document.getElementById("stat-total-news").innerText = newsList.length;
-            document.getElementById("stat-total-gallery").innerText = galleryList.length;
+        async function updateStats() {
+            try {
+                const newsSnap = await getDocs(collection(db, "news"));
+                const gallerySnap = await getDocs(collection(db, "gallery"));
+                document.getElementById("stat-total-news").innerText = newsSnap.size;
+                document.getElementById("stat-total-gallery").innerText = gallerySnap.size;
+            } catch (e) {
+                console.error("Error memuat statistik:", e);
+            }
         }
 
-        function renderAdminNews() {
+        async function renderAdminNews() {
             const tbody = document.getElementById("admin-news-list");
-            const newsList = JSON.parse(localStorage.getItem("mts_news")) || [];
-            if (newsList.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#94A3B8;">Belum ada data berita.</td></tr>`;
-                return;
+            tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#94A3B8;">Memuat data...</td></tr>`;
+            try {
+                const q = query(collection(db, "news"), orderBy("createdAt", "desc"));
+                const snapshot = await getDocs(q);
+
+                if (snapshot.empty) {
+                    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#94A3B8;">Belum ada data berita.</td></tr>`;
+                    return;
+                }
+
+                tbody.innerHTML = "";
+                snapshot.forEach((docSnap) => {
+                    const item = docSnap.data();
+                    const tr = document.createElement("tr");
+                    tr.innerHTML = `
+                        <td>${item.date}</td>
+                        <td><strong>${item.title}</strong></td>
+                        <td>${item.category}</td>
+                        <td><span style="padding: 4px 8px; border-radius: 4px; font-size: 11px; background: ${item.status === 'published' ? '#10B98120' : '#F59E0B20'}; color: ${item.status === 'published' ? '#10B981' : '#F59E0B'}">${item.status.toUpperCase()}</span></td>
+                        <td><button class="btn-action btn-danger" onclick="deleteNews('${docSnap.id}')"><i class="fas fa-trash"></i> Hapus</button></td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            } catch (e) {
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:red;">Gagal memuat berita.</td></tr>`;
             }
-            tbody.innerHTML = "";
-            newsList.forEach((item, index) => {
-                const tr = document.createElement("tr");
-                tr.innerHTML = `
-                    <td>${item.date}</td>
-                    <td><strong>${item.title}</strong></td>
-                    <td>${item.category}</td>
-                    <td><span style="padding: 4px 8px; border-radius: 4px; font-size: 11px; background: ${item.status === 'published' ? '#10B98120' : '#F59E0B20'}; color: ${item.status === 'published' ? '#10B981' : '#F59E0B'}">${item.status.toUpperCase()}</span></td>
-                    <td><button class="btn-action btn-danger" onclick="deleteNews(${index})"><i class="fas fa-trash"></i> Hapus</button></td>
-                `;
-                tbody.appendChild(tr);
-            });
         }
 
-        function deleteNews(index) {
+        window.deleteNews = async function(docId) {
             if (confirm("Yakin ingin menghapus berita ini?")) {
-                let newsList = JSON.parse(localStorage.getItem("mts_news")) || [];
-                newsList.splice(index, 1);
-                localStorage.setItem("mts_news", JSON.stringify(newsList));
-                renderAdminNews();
-                updateStats();
+                try {
+                    await deleteDoc(doc(db, "news", docId));
+                    renderAdminNews();
+                    updateStats();
+                } catch (e) {
+                    alert("Gagal menghapus berita: " + e.message);
+                }
             }
-        }
+        };
 
-        function renderAdminGallery() {
+        async function renderAdminGallery() {
             const tbody = document.getElementById("admin-gallery-list");
-            const galleryList = JSON.parse(localStorage.getItem("mts_gallery")) || [];
-            if (galleryList.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#94A3B8;">Belum ada foto galeri.</td></tr>`;
-                return;
+            tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:#94A3B8;">Memuat data...</td></tr>`;
+            try {
+                const q = query(collection(db, "gallery"), orderBy("createdAt", "desc"));
+                const snapshot = await getDocs(q);
+
+                if (snapshot.empty) {
+                    tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:#94A3B8;">Belum ada foto galeri.</td></tr>`;
+                    return;
+                }
+
+                tbody.innerHTML = "";
+                snapshot.forEach((docSnap) => {
+                    const item = docSnap.data();
+                    const tr = document.createElement("tr");
+                    tr.innerHTML = `
+                        <td><strong>${item.title}</strong></td>
+                        <td>${item.description}</td>
+                        <td><button class="btn-action btn-danger" onclick="deleteGallery('${docSnap.id}')"><i class="fas fa-trash"></i> Hapus</button></td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            } catch (e) {
+                tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:red;">Gagal memuat galeri.</td></tr>`;
             }
-            tbody.innerHTML = "";
-            galleryList.forEach((item, index) => {
-                const tr = document.createElement("tr");
-                tr.innerHTML = `
-                    <td><img src="${item.image}" style="width: 60px; height: 45px; object-fit: cover; border-radius: 4px;"></td>
-                    <td><strong>${item.title}</strong></td>
-                    <td>${item.description}</td>
-                    <td><button class="btn-action btn-danger" onclick="deleteGallery(${index})"><i class="fas fa-trash"></i> Hapus</button></td>
-                `;
-                tbody.appendChild(tr);
-            });
         }
 
-        function deleteGallery(index) {
+        window.deleteGallery = async function(docId) {
             if (confirm("Yakin ingin menghapus foto ini?")) {
-                let galleryList = JSON.parse(localStorage.getItem("mts_gallery")) || [];
-                galleryList.splice(index, 1);
-                localStorage.setItem("mts_gallery", JSON.stringify(galleryList));
-                renderAdminGallery();
-                updateStats();
+                try {
+                    await deleteDoc(doc(db, "gallery", docId));
+                    renderAdminGallery();
+                    updateStats();
+                } catch (e) {
+                    alert("Gagal menghapus foto: " + e.message);
+                }
             }
-        }
+        };
     </script>
 </body>
 </html>
