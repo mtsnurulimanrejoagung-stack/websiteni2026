@@ -18,7 +18,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const menuBtn = document.getElementById("menuBtn");
     const navbar = document.getElementById("navbar");
 
-    // Fungsi untuk menutup semua sub-menu dropdown (baik di laptop maupun HP)
     function closeAllDropdowns() {
         document.querySelectorAll(".dropdown").forEach(drop => {
             drop.classList.remove("open", "active");
@@ -30,7 +29,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (menuBtn && navbar) {
-        // Buka/tutup menu garis tiga di HP
         menuBtn.addEventListener("click", (e) => {
             e.stopPropagation();
             navbar.classList.toggle("active");
@@ -39,7 +37,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
 
-        // Klik pada tombol menu utama yang punya sub-menu (Profil & Akademik)
         document.querySelectorAll(".dropdown > a").forEach(toggleLink => {
             toggleLink.addEventListener("click", (e) => {
                 e.preventDefault();
@@ -69,7 +66,6 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         });
 
-        // Klik pada link biasa atau link di dalam sub-menu
         navbar.querySelectorAll("a").forEach(link => {
             if (!link.parentElement.classList.contains("dropdown")) {
                 link.addEventListener("click", () => {
@@ -79,7 +75,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
 
-        // Tutup dropdown otomatis jika klik di luar area menu
         document.addEventListener("click", (e) => {
             if (!navbar.contains(e.target) && !menuBtn.contains(e.target)) {
                 closeAllDropdowns();
@@ -102,60 +97,87 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // Load Data dari Firestore
     loadPublicNews();
     loadPublicGallery();
     loadPublicPrestasi();
 });
 
-// Load Berita Publik
+// Load Berita Publik (Maksimal 3 Terbaru + Tombol Baca Selengkapnya & Lihat Berita Lainnya)
 async function loadPublicNews() {
     const container = document.getElementById("news-container");
+    const moreWrapper = document.getElementById("news-more-wrapper");
     if (!container) return;
 
     try {
         const q = query(collection(db, "news"), orderBy("createdAt", "desc"));
         const snapshot = await getDocs(q);
 
-        if (snapshot.empty) {
+        const publishedNews = [];
+        snapshot.forEach(docSnap => {
+            const item = docSnap.data();
+            if (item.status === "published") {
+                publishedNews.push({ id: docSnap.id, ...item });
+            }
+        });
+
+        if (publishedNews.length === 0) {
             container.innerHTML = `
                 <div class="empty-state">
                     <i class="fas fa-newspaper"></i>
                     <p>Belum ada berita yang dipublikasikan.</p>
                 </div>
             `;
+            if (moreWrapper) moreWrapper.style.display = "none";
             return;
         }
 
+        const latestThree = publishedNews.slice(0, 3);
+
         container.innerHTML = "";
-        snapshot.forEach(docSnap => {
-            const item = docSnap.data();
-            if (item.status === "published") {
-                const card = document.createElement("div");
-                card.className = "card-item";
-                card.style.padding = "0";
-                card.style.overflow = "hidden";
-                card.style.textAlign = "left";
-                card.innerHTML = `
-                    ${item.image ? `<img src="${item.image}" alt="${item.title}" style="width:100%; height:200px; object-fit:cover;">` : ''}
-                    <div style="padding: 20px;">
+        latestThree.forEach(item => {
+            const card = document.createElement("div");
+            card.className = "card-item";
+            card.style.padding = "0";
+            card.style.overflow = "hidden";
+            card.style.textAlign = "left";
+            card.style.display = "flex";
+            card.style.flexDirection = "column";
+            card.innerHTML = `
+                ${item.image ? `<img src="${item.image}" alt="${item.title}" style="width:100%; height:200px; object-fit:cover;">` : ''}
+                <div style="padding: 20px; display: flex; flex-direction: column; flex-grow: 1;">
+                    <div>
                         <span style="font-size: 11px; font-weight:600; color:#2563EB; background:#EFF6FF; padding:4px 8px; border-radius:4px;">${item.category}</span>
                         <h3 style="font-size: 16px; margin: 10px 0 6px 0; color:#0A192F;">${item.title}</h3>
                         <p style="font-size: 12px; color:#64748B; margin-bottom: 10px;"><i class="far fa-calendar-alt"></i> ${item.date}</p>
-                        <p style="font-size: 13px; color:#334155; line-height: 1.5;">${item.content.substring(0, 110)}...</p>
+                        <p style="font-size: 13px; color:#334155; line-height: 1.5; margin-bottom: 16px;">${item.content.substring(0, 110)}...</p>
                     </div>
-                `;
-                container.appendChild(card);
-            }
+                    <div style="margin-top: auto;">
+                        <a href="baca.html?id=${item.id}" target="_blank" style="display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: #2563EB; text-decoration: none;">
+                            Baca Selengkapnya <i class="fas fa-arrow-right" style="font-size: 11px;"></i>
+                        </a>
+                    </div>
+                </div>
+            `;
+            container.appendChild(card);
         });
+
+        // Munculkan tombol "Lihat Berita Lainnya" jika total berita published > 3
+        if (moreWrapper) {
+            if (publishedNews.length > 3) {
+                moreWrapper.style.setProperty("display", "block", "important");
+            } else {
+                moreWrapper.style.setProperty("display", "none", "important");
+            }
+        }
     } catch (e) {
         console.error("Gagal memuat berita:", e);
     }
 }
 
-// Load Galeri Publik
+// Load Galeri Publik (Maksimal 4 Terbaru + Tombol Lihat Galeri Lainnya)
 async function loadPublicGallery() {
     const container = document.getElementById("gallery-container");
+    const moreWrapper = document.getElementById("gallery-more-wrapper");
     if (!container) return;
 
     try {
@@ -169,12 +191,17 @@ async function loadPublicGallery() {
                     <p>Belum ada foto galeri yang diunggah.</p>
                 </div>
             `;
+            if (moreWrapper) moreWrapper.style.display = "none";
             return;
         }
 
+        const items = [];
+        snapshot.forEach(docSnap => items.push({ id: docSnap.id, ...docSnap.data() }));
+
+        const latestFour = items.slice(0, 4);
+
         container.innerHTML = "";
-        snapshot.forEach(docSnap => {
-            const item = docSnap.data();
+        latestFour.forEach(item => {
             const card = document.createElement("div");
             card.className = "facility-card";
             card.innerHTML = `
@@ -186,6 +213,15 @@ async function loadPublicGallery() {
             `;
             container.appendChild(card);
         });
+
+        // Munculkan tombol "Lihat Galeri Lainnya" jika total galeri > 4
+        if (moreWrapper) {
+            if (items.length > 4) {
+                moreWrapper.style.setProperty("display", "block", "important");
+            } else {
+                moreWrapper.style.setProperty("display", "none", "important");
+            }
+        }
     } catch (e) {
         console.error("Gagal memuat galeri:", e);
     }
@@ -214,7 +250,6 @@ async function loadPublicPrestasi() {
         const items = [];
         snapshot.forEach(docSnap => items.push(docSnap.data()));
 
-        // Urutkan berdasarkan nomor urutan (1, 2, 3, dst.), jika sama/kosong urutkan terbaru
         items.sort((a, b) => {
             const orderA = (a.order !== undefined && a.order !== null && a.order !== "") ? Number(a.order) : 9999;
             const orderB = (b.order !== undefined && b.order !== null && b.order !== "") ? Number(b.order) : 9999;
@@ -222,7 +257,6 @@ async function loadPublicPrestasi() {
             return (b.createdAt || 0) - (a.createdAt || 0);
         });
 
-        // Ambil maksimal 3 teratas untuk beranda
         const topThree = items.slice(0, 3);
 
         container.innerHTML = "";
@@ -240,9 +274,12 @@ async function loadPublicPrestasi() {
             container.appendChild(card);
         });
 
-        // Tampilkan tombol "Lihat Prestasi Selanjutnya" jika total data > 3
         if (moreWrapper) {
-            moreWrapper.style.display = items.length > 3 ? "block" : "none";
+            if (items.length > 3) {
+                moreWrapper.style.setProperty("display", "block", "important");
+            } else {
+                moreWrapper.style.setProperty("display", "none", "important");
+            }
         }
     } catch (e) {
         console.error("Gagal memuat prestasi:", e);
