@@ -3,34 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Berita & Pengumuman - MTsS Nurul Iman Rejo Agung</title>
-    <!-- Google Fonts & Font Awesome -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Semua Berita - MTsS Nurul Iman Rejo Agung</title>
+    <!-- Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Main Stylesheet -->
     <link rel="stylesheet" href="style.css">
-    
-    <style>
-        .archive-header {
-            background: linear-gradient(rgba(10,25,47,0.85), rgba(10,25,47,0.85)), url('gedung.jpeg') no-repeat center center/cover;
-            color: var(--white);
-            padding: 70px 20px;
-            text-align: center;
-        }
-        .archive-header h1 {
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 0;
-        }
-
-        @media (max-width: 768px) {
-            .archive-header {
-                padding: 50px 15px;
-            }
-            .archive-header h1 {
-                font-size: 22px;
-            }
-        }
-    </style>
 </head>
 <body>
 
@@ -38,21 +17,21 @@
     <div class="top-bar">
         <div class="container top-bar-container">
             <div class="top-info">
-                <span><i class="fas fa-map-marker-alt"></i> Rejo Agung, Kec. Tegineneng, Kab. Pesawaran</span>
+                <span><i class="fas fa-map-marker-alt"></i> Rejo Agung, Kec. Tegineneng, Kab. Pesawaran, Lampung</span>
                 <span><i class="fas fa-envelope"></i> mtsnurulimanrejoagung@gmail.com</span>
             </div>
             <div class="top-social">
-                <a href="https://www.instagram.com/mtsnurulimanrejoagung?xtok=MWM3NW56czNtanF1ag=="><i class="fab fa-instagram"></i></a>
-                <a href="https://www.facebook.com/share/18sLQh4SEs/"><i class="fab fa-facebook"></i></a>
-                <a href="https://www.tiktok.com/@mtsnurulimanrejoagung?_r=1&_t=ZS-9BQSEXSqoWA"><i class="fab fa-tiktok"></i></a>
-                <a href="https://youtube.com/@mtsnurulimanrejoagung?si=ZpMD5FcAGb5L1xf3"><i class="fab fa-youtube"></i></a>
+                <a href="https://www.instagram.com/mtsnurulimanrejoagung?xtok=MWM3NW56czNtanF1ag==" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.facebook.com/share/18sLQh4SEs/" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://www.tiktok.com/@mtsnurulimanrejoagung?_r=1&_t=ZS-9BQSEXSqoWA" target="_blank" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                <a href="https://youtube.com/@mtsnurulimanrejoagung?si=ZpMD5FcAGb5L1xf3" target="_blank" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
             </div>
         </div>
     </div>
 
-    <!-- HEADER MINIMALIS (LOGO + TOMBOL KEMBALI) -->
+    <!-- HEADER / NAVBAR -->
     <header class="header">
-        <div class="container nav-container" style="display: flex; justify-content: space-between; align-items: center;">
+        <div class="container nav-container">
             <a href="index.html" class="logo">
                 <img src="logo.jpeg" alt="Logo MTsS Nurul Iman" style="width: 50px; height: 50px; object-fit: contain; border-radius: 8px; margin-right: 12px;">
                 <div class="logo-text">
@@ -60,56 +39,135 @@
                     <p>Rejo Agung</p>
                 </div>
             </a>
-            <a href="index.html" class="btn-primary" style="font-size: 13px; padding: 8px 18px; text-decoration: none; border-radius: 6px; display: inline-flex; align-items: center; gap: 6px;">
-                <i class="fas fa-home"></i> Beranda Utama
-            </a>
+
+            <div class="nav-actions">
+                <a href="index.html" class="btn-primary"><i class="fas fa-arrow-left"></i> Kembali ke Beranda</a>
+            </div>
         </div>
     </header>
 
-    <!-- ARCHIVE HERO -->
-    <section class="archive-header">
+    <!-- SEMUA BERITA -->
+    <section class="section bg-light" style="min-height: 75vh;">
         <div class="container">
-            <h1>Berita & Pengumuman Madrasah</h1>
-        </div>
-    </section>
-
-    <!-- KONTEN DAFTAR SEMUA BERITA -->
-    <section class="section">
-        <div class="container">
-            <div class="grid-3" id="news-container">
-                <!-- Berita akan dimuat otomatis via script.js -->
+            <div class="section-title">
+                <h2>Semua Berita & Pengumuman</h2>
+                <p>Arsip informasi dan kegiatan terbaru MTsS Nurul Iman Rejo Agung</p>
+            </div>
+            <div class="grid-3" id="all-news-container">
+                <div class="empty-state">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>Memuat daftar berita...</p>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- FOOTER -->
     <footer class="footer">
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-col">
-                    <h3>MTsS Nurul Iman Rejo Agung</h3>
-                    <p>Lembaga pendidikan Islam terpercaya yang mencetak generasi cerdas, berakhlak mulia, dan berwawasan global.</p>
+        <div class="container footer-grid">
+            <div class="footer-col">
+                <div class="logo" style="margin-bottom: 15px;">
+                    <img src="logo.jpeg" alt="Logo MTsS Nurul Iman" style="width: 50px; height: 50px; object-fit: contain; border-radius: 8px; margin-right: 12px;">
+                    <div class="logo-text">
+                        <h1 style="color: white;">MTsS NURUL IMAN</h1>
+                        <p style="color: var(--light-blue);">Rejo Agung</p>
+                    </div>
                 </div>
-                <div class="footer-col">
-                    <h3>Tautan Cepat</h3>
-                    <ul>
-                        <li><a href="index.html">Beranda</a></li>
-                        <li><a href="berita.html">Berita & Pengumuman</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h3>Hubungi Kami</h3>
-                    <p><i class="fas fa-map-marker-alt"></i> Rejo Agung, Tegineneng, Pesawaran</p>
-                    <p><i class="fas fa-envelope"></i> info@mtsnuruliman.sch.id</p>
-                </div>
+                <p>Mencetak generasi Islami yang cerdas, berakhlak mulia, dan siap bersaing di era digital.</p>
             </div>
-            <div class="footer-bottom">
-                <p>&copy; 2026 MTsS Nurul Iman Rejo Agung. Hak Cipta Dilindungi.</p>
+            <div class="footer-col">
+                <h3>Menu Cepat</h3>
+                <ul>
+                    <li><a href="index.html#beranda">Beranda</a></li>
+                    <li><a href="index.html#profil">Profil Madrasah</a></li>
+                    <li><a href="index.html#akademik">Akademik</a></li>
+                    <li><a href="index.html#prestasi">Prestasi</a></li>
+                    <li><a href="berita.html">Berita Terbaru</a></li>
+                    <li><a href="admin.html" target="_blank">Login Admin</a></li>
+                </ul>
             </div>
+            <div class="footer-col">
+                <h3>Jam Kegiatan Belajar Mengajar</h3>
+                <p>Senin - Kamis: 07.15 - 13.50 WIB</p>
+                <p>Jumat: 07.15 - 11.00 WIB</p>
+                <p>Sabtu: 07.15 - 11.30 WIB</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 MTsS Nurul Iman Rejo Agung. All Rights Reserved.</p>
         </div>
     </footer>
 
-    <!-- SCRIPT UTAMA -->
-    <script type="module" src="script.js"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDCokgJrrjQk7YTTw2iu4-p5S6SvbCCV0g",
+            authDomain: "websiteni2026.firebaseapp.com",
+            projectId: "websiteni2026",
+            storageBucket: "websiteni2026.firebasestorage.app",
+            messagingSenderId: "596706822852",
+            appId: "1:596706822852:web:febe256e797e71ca0cd791",
+            measurementId: "G-Z1XKB3K9L2"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        async function loadAllNews() {
+            const container = document.getElementById("all-news-container");
+            try {
+                const q = query(collection(db, "news"), orderBy("createdAt", "desc"));
+                const snapshot = await getDocs(q);
+
+                const publishedNews = [];
+                snapshot.forEach(docSnap => {
+                    const item = docSnap.data();
+                    if (item.status === "published") {
+                        publishedNews.push({ id: docSnap.id, ...item });
+                    }
+                });
+
+                if (publishedNews.length === 0) {
+                    container.innerHTML = `<div class="empty-state"><i class="fas fa-newspaper"></i><p>Belum ada berita yang dipublikasikan.</p></div>`;
+                    return;
+                }
+
+                container.innerHTML = "";
+                publishedNews.forEach(item => {
+                    const card = document.createElement("div");
+                    card.className = "card-item";
+                    card.style.padding = "0";
+                    card.style.overflow = "hidden";
+                    card.style.textAlign = "left";
+                    card.style.display = "flex";
+                    card.style.flexDirection = "column";
+                    card.innerHTML = `
+                        ${item.image ? `<img src="${item.image}" alt="${item.title}" style="width:100%; height:200px; object-fit:cover;">` : ''}
+                        <div style="padding: 20px; display: flex; flex-direction: column; flex-grow: 1;">
+                            <div>
+                                <span style="font-size: 11px; font-weight:600; color:#2563EB; background:#EFF6FF; padding:4px 8px; border-radius:4px;">${item.category}</span>
+                                <h3 style="font-size: 16px; margin: 10px 0 6px 0; color:#0A192F;">${item.title}</h3>
+                                <p style="font-size: 12px; color:#64748B; margin-bottom: 10px;"><i class="far fa-calendar-alt"></i> ${item.date}</p>
+                                <p style="font-size: 13px; color:#334155; line-height: 1.5; margin-bottom: 16px;">${item.content.substring(0, 110)}...</p>
+                            </div>
+                            <div style="margin-top: auto;">
+                                <a href="baca.html?id=${item.id}" target="_blank" style="display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: #2563EB; text-decoration: none;">
+                                    Baca Selengkapnya <i class="fas fa-arrow-right" style="font-size: 11px;"></i>
+                                </a>
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            } catch (e) {
+                console.error(e);
+                container.innerHTML = `<div class="empty-state"><p>Gagal memuat daftar berita.</p></div>`;
+            }
+        }
+
+        loadAllNews();
+    </script>
 </body>
 </html>
