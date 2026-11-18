@@ -85,7 +85,7 @@
             display: none;
         }
 
-        /* DASHBOARD LAYOUT (TERSEMBUNYI SEBELUM LOGIN) */
+        /* DASHBOARD LAYOUT */
         #admin-app {
             display: none;
             min-height: 100vh;
@@ -203,7 +203,6 @@
             color: var(--blue);
         }
 
-        /* SECTION / TAB KONTEN */
         .admin-section {
             display: none;
         }
@@ -215,7 +214,7 @@
         /* STATS CARDS */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 25px;
             margin-bottom: 30px;
         }
@@ -440,7 +439,7 @@
         </div>
     </div>
 
-    <!-- 2. APLIKASI DASHBOARD ADMIN (TERLINDUNGI) -->
+    <!-- 2. APLIKASI DASHBOARD ADMIN -->
     <div id="admin-app">
         <div class="admin-layout">
             <!-- SIDEBAR -->
@@ -453,8 +452,10 @@
                     <li><a class="nav-link active" data-target="dashboard-section"><i class="fas fa-home"></i> Dashboard</a></li>
                     <li><a class="nav-link" data-target="news-section"><i class="fas fa-newspaper"></i> Posting Berita</a></li>
                     <li><a class="nav-link" data-target="gallery-section"><i class="fas fa-images"></i> Upload Galeri</a></li>
+                    <li><a class="nav-link" data-target="prestasi-section"><i class="fas fa-trophy"></i> Input Prestasi</a></li>
                     <li><a class="nav-link" data-target="list-news-section"><i class="fas fa-list"></i> Daftar Berita</a></li>
                     <li><a class="nav-link" data-target="list-gallery-section"><i class="fas fa-photo-video"></i> Daftar Galeri</a></li>
+                    <li><a class="nav-link" data-target="list-prestasi-section"><i class="fas fa-medal"></i> Daftar Prestasi</a></li>
                     <li><a id="btnLogout"><i class="fas fa-sign-out-alt"></i> Logout / Keluar</a></li>
                 </ul>
             </div>
@@ -485,10 +486,17 @@
                                 <p>Total Foto Galeri</p>
                             </div>
                         </div>
+                        <div class="stat-card" style="border-left-color: var(--success);">
+                            <div class="stat-icon" style="background: rgba(16,185,129,0.1); color: var(--success);"><i class="fas fa-trophy"></i></div>
+                            <div class="stat-info">
+                                <h3 id="stat-total-prestasi">0</h3>
+                                <p>Total Prestasi</p>
+                            </div>
+                        </div>
                     </div>
                     <div class="card-form">
                         <h3>Selamat Datang di Panel Admin</h3>
-                        <p style="font-size: 14px; color: #64748B;">Gunakan menu navigasi di samping untuk mengelola berita, pengumuman, dan galeri foto madrasah secara online (real-time di semua perangkat).</p>
+                        <p style="font-size: 14px; color: #64748B;">Gunakan menu navigasi di samping untuk mengelola berita, pengumuman, galeri foto, dan prestasi madrasah secara online (real-time di semua perangkat).</p>
                     </div>
                 </div>
 
@@ -551,6 +559,28 @@
                     </div>
                 </div>
 
+                <!-- INPUT PRESTASI -->
+                <div id="prestasi-section" class="admin-section">
+                    <div class="card-form">
+                        <h3>Formulir Prestasi Madrasah</h3>
+                        <form id="prestasiForm">
+                            <div class="form-group">
+                                <label>Nama Kejuaraan / Lomba</label>
+                                <input type="text" id="prestasiTitle" placeholder="Contoh: Juara 1 Kompetisi Sains Madrasah (KSM)" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Tingkat & Tahun</label>
+                                <input type="text" id="prestasiLevel" placeholder="Contoh: Tingkat Kabupaten • 2026" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Keterangan / Nama Siswa</label>
+                                <textarea id="prestasiDesc" rows="3" placeholder="Contoh: Bidang Matematika Terintegrasi - Ananda Ahmad Fauzi" required></textarea>
+                            </div>
+                            <button type="submit" id="btnSubmitPrestasi" class="btn-submit"><i class="fas fa-paper-plane"></i> Simpan Prestasi</button>
+                        </form>
+                    </div>
+                </div>
+
                 <!-- DAFTAR BERITA -->
                 <div id="list-news-section" class="admin-section">
                     <div class="card-form">
@@ -590,6 +620,27 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- DAFTAR PRESTASI -->
+                <div id="list-prestasi-section" class="admin-section">
+                    <div class="card-form">
+                        <h3>Kelola Data Prestasi</h3>
+                        <div style="overflow-x: auto;">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Nama Kejuaraan</th>
+                                        <th>Tingkat / Tahun</th>
+                                        <th>Keterangan</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-prestasi-list"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
@@ -686,6 +737,7 @@
 
                     if (targetId === "list-news-section") renderAdminNews();
                     if (targetId === "list-gallery-section") renderAdminGallery();
+                    if (targetId === "list-prestasi-section") renderAdminPrestasi();
                     if (targetId === "dashboard-section") updateStats();
                 });
             });
@@ -766,6 +818,37 @@
                     btn.innerHTML = `<i class="fas fa-upload"></i> Upload ke Galeri`;
                 }
             });
+
+            const prestasiForm = document.getElementById("prestasiForm");
+            prestasiForm.addEventListener("submit", async (e) => {
+                e.preventDefault();
+                const btn = document.getElementById("btnSubmitPrestasi");
+                btn.disabled = true;
+                btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Menyimpan...`;
+
+                try {
+                    const title = document.getElementById("prestasiTitle").value;
+                    const level = document.getElementById("prestasiLevel").value;
+                    const description = document.getElementById("prestasiDesc").value;
+
+                    await addDoc(collection(db, "prestasi"), {
+                        title,
+                        level,
+                        description,
+                        createdAt: Date.now()
+                    });
+
+                    alert("Data prestasi berhasil disimpan ke seluruh perangkat!");
+                    prestasiForm.reset();
+                    updateStats();
+                } catch (err) {
+                    console.error(err);
+                    alert("Gagal menyimpan prestasi: " + err.message);
+                } finally {
+                    btn.disabled = false;
+                    btn.innerHTML = `<i class="fas fa-paper-plane"></i> Simpan Prestasi`;
+                }
+            });
         });
 
         function showAdminDashboard() {
@@ -778,8 +861,10 @@
             try {
                 const newsSnap = await getDocs(collection(db, "news"));
                 const gallerySnap = await getDocs(collection(db, "gallery"));
+                const prestasiSnap = await getDocs(collection(db, "prestasi"));
                 document.getElementById("stat-total-news").innerText = newsSnap.size;
                 document.getElementById("stat-total-gallery").innerText = gallerySnap.size;
+                document.getElementById("stat-total-prestasi").innerText = prestasiSnap.size;
             } catch (e) {
                 console.error("Error memuat statistik:", e);
             }
@@ -863,6 +948,47 @@
                     updateStats();
                 } catch (e) {
                     alert("Gagal menghapus foto: " + e.message);
+                }
+            }
+        };
+
+        async function renderAdminPrestasi() {
+            const tbody = document.getElementById("admin-prestasi-list");
+            tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#94A3B8;">Memuat data...</td></tr>`;
+            try {
+                const q = query(collection(db, "prestasi"), orderBy("createdAt", "desc"));
+                const snapshot = await getDocs(q);
+
+                if (snapshot.empty) {
+                    tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#94A3B8;">Belum ada data prestasi.</td></tr>`;
+                    return;
+                }
+
+                tbody.innerHTML = "";
+                snapshot.forEach((docSnap) => {
+                    const item = docSnap.data();
+                    const tr = document.createElement("tr");
+                    tr.innerHTML = `
+                        <td><strong>${item.title}</strong></td>
+                        <td>${item.level}</td>
+                        <td>${item.description}</td>
+                        <td><button class="btn-action btn-danger" onclick="deletePrestasi('${docSnap.id}')"><i class="fas fa-trash"></i> Hapus</button></td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            } catch (e) {
+                tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:red;">Gagal memuat data prestasi.</td></tr>`;
+            }
+        }
+
+        window.deletePrestasi = async function(docId) {
+            if (confirm("Yakin ingin menghapus data prestasi ini?")) {
+                try {
+                    await deleteDoc(doc(db, "prestasi", docId));
+                    renderAdminPrestasi();
+                    updateStats();
+                } catch (e) {
+                    alert("Gagal menghapus prestasi: " + e.message);
                 }
             }
         };
