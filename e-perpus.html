@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>E-Perpus - MTsS Nurul Iman Rejo Agung</title>
+    <title>E-Perpus Digital - MTsS Nurul Iman Rejo Agung</title>
     <!-- Google Fonts: Poppins -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- FontAwesome Icons -->
@@ -23,13 +23,28 @@
             font-family: 'Poppins', sans-serif;
         }
 
+        /* TEKS BERJALAN (MARQUEE) ESTETIK */
+        .marquee-container {
+            background-color: var(--navy);
+            color: var(--gold);
+            padding: 8px 0;
+            font-size: 13px;
+            font-weight: 500;
+            overflow: hidden;
+            white-space: nowrap;
+            border-bottom: 2px solid var(--gold);
+        }
+
+        .marquee-container marquee {
+            width: 100%;
+        }
+
         /* HERO BANNER E-PERPUS ESTETIK */
         .perpus-hero {
             background: linear-gradient(135deg, rgba(10,25,47,0.92), rgba(30,58,138,0.9)), url('perpus-bg.jpg') center/cover;
-            padding: 70px 20px;
+            padding: 60px 20px;
             text-align: center;
             color: #FFFFFF;
-            border-bottom: 4px solid var(--gold);
         }
 
         .perpus-hero h1 {
@@ -87,34 +102,55 @@
             background: var(--navy);
         }
 
-        /* GRID KARTU BUKU ESTETIK */
+        /* TAMPILAN RAK BUKU (BOOKSHELF STYLE) */
+        .bookshelf-section {
+            background: #F1F5F9;
+            padding: 40px 20px;
+            border-radius: 16px;
+            box-shadow: inset 0 4px 15px rgba(0,0,0,0.03);
+            margin-bottom: 60px;
+            border: 1px solid #E2E8F0;
+        }
+
         .books-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-            gap: 25px;
-            padding-bottom: 60px;
+            gap: 30px;
         }
 
         .book-card {
             background: #FFFFFF;
-            border-radius: 14px;
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.04);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.06);
             transition: all 0.3s ease;
             display: flex;
             flex-direction: column;
-            border: 1px solid #F1F5F9;
+            border: 1px solid #E2E8F0;
+            position: relative;
         }
 
         .book-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 12px 30px rgba(37,99,235,0.12);
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(37,99,235,0.15);
+        }
+
+        /* EFEK KAYU RAK BUKU DI BAWAH KARTU */
+        .book-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: linear-gradient(90deg, #B45309, #D97706, #B45309);
+            border-top: 1px solid #F59E0B;
         }
 
         .book-cover-wrapper {
             position: relative;
             width: 100%;
-            height: 260px;
+            height: 250px;
             background: #0A192F;
             overflow: hidden;
         }
@@ -131,13 +167,12 @@
         }
 
         .book-info {
-            padding: 18px;
+            padding: 16px 16px 22px 16px;
             display: flex;
             flex-direction: column;
             flex-grow: 1;
         }
 
-        /* LABEL KATEGORI DI LUAR (DI ATAS JUDUL) */
         .book-category-tag {
             font-size: 11px;
             font-weight: 600;
@@ -201,16 +236,17 @@
             .logo-text h1 { font-size: 12px !important; white-space: nowrap; line-height: 1.1; }
             .logo-text p { font-size: 10px !important; }
             .nav-actions .btn-primary { padding: 6px 10px !important; font-size: 11px !important; }
-            .perpus-hero { padding: 45px 15px; }
+            .perpus-hero { padding: 40px 15px; }
             .perpus-hero h1 { font-size: 22px; }
             .perpus-hero p { font-size: 13px; }
             .search-container { margin-top: -20px; margin-bottom: 30px; }
+            .bookshelf-section { padding: 20px 10px; }
             .books-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-            .book-cover-wrapper { height: 180px; }
-            .book-info { padding: 12px; }
-            .book-title { font-size: 13px; }
-            .book-author { font-size: 11px; margin-bottom: 10px; }
-            .btn-read { padding: 8px; font-size: 11px; }
+            .book-cover-wrapper { height: 170px; }
+            .book-info { padding: 10px 10px 16px 10px; }
+            .book-title { font-size: 12px; }
+            .book-author { font-size: 10px; margin-bottom: 8px; }
+            .btn-read { padding: 6px; font-size: 11px; }
         }
     </style>
 </head>
@@ -249,6 +285,13 @@
         </div>
     </header>
 
+    <!-- TEKS BERJALAN (MARQUEE) -->
+    <div class="marquee-container">
+        <marquee behavior="scroll" direction="left" scrollamount="5">
+            <i class="fas fa-book-reader" style="margin-right: 8px;"></i> Selamat Datang di E-Perpus MTsS Nurul Iman Rejo Agung — Pusat Literasi Digital, Modul Pembelajaran, dan Referensi Keislaman Siswa-Siswi Madrasah 📚✨
+        </marquee>
+    </div>
+
     <!-- HERO SECTION ESTETIK -->
     <div class="perpus-hero">
         <div class="container">
@@ -265,13 +308,15 @@
         </div>
     </div>
 
-    <!-- KATALOG BUKU -->
+    <!-- KATALOG BUKU DENGAN TAMPILAN RAK BUKU -->
     <section class="section" style="padding-top: 0;">
         <div class="container">
-            <div class="books-grid" id="books-container">
-                <div class="empty-state" style="grid-column: 1 / -1; text-align: center; padding: 50px;">
-                    <i class="fas fa-spinner fa-spin" style="font-size: 32px; color: var(--blue); margin-bottom: 12px;"></i>
-                    <p style="color: #64748B;">Memuat koleksi buku perpustakaan...</p>
+            <div class="bookshelf-section">
+                <div class="books-grid" id="books-container">
+                    <div class="empty-state" style="grid-column: 1 / -1; text-align: center; padding: 50px;">
+                        <i class="fas fa-spinner fa-spin" style="font-size: 32px; color: var(--blue); margin-bottom: 12px;"></i>
+                        <p style="color: #64748B;">Memuat koleksi buku perpustakaan...</p>
+                    </div>
                 </div>
             </div>
         </div>
