@@ -35,6 +35,37 @@
         }
         #login-section h2 { color: var(--navy); font-size: 22px; margin-bottom: 20px; }
 
+        /* TAB NAVIGASI ADMIN */
+        .admin-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+        .admin-tab-btn {
+            background: #E2E8F0;
+            color: var(--gray-dark);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .admin-tab-btn.active {
+            background: var(--blue);
+            color: var(--white);
+        }
+
+        .tab-panel {
+            display: none;
+        }
+        .tab-panel.active {
+            display: block;
+        }
+
         .card-form { background: var(--white); padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 30px; }
         .card-form h2 { font-size: 20px; color: var(--navy); margin-bottom: 20px; border-bottom: 2px solid var(--gray-light); padding-bottom: 10px; }
         .form-group { margin-bottom: 18px; text-align: left; }
@@ -84,63 +115,73 @@
             </div>
         </div>
 
-        <!-- FORM TAMBAH / EDIT BUKU -->
-        <div class="card-form">
-            <h2 id="form-title">Upload Buku Digital Baru</h2>
-            <form id="bookForm">
-                <input type="hidden" id="editBookId">
-                <div class="form-group">
-                    <label>Judul Buku</label>
-                    <input type="text" id="bookTitle" placeholder="Contoh: Modul Fiqih Kelas VII" required>
-                </div>
-                <div class="form-group">
-                    <label>Nama Penulis / Penyusun</label>
-                    <input type="text" id="bookAuthor" placeholder="Contoh: Tim Guru Agama MTsS Nurul Iman" required>
-                </div>
-                <div class="form-group">
-                    <label>Kategori Buku</label>
-                    <select id="bookCategory">
-                        <option value="Buku Paket Pelajaran">Buku Paket Pelajaran</option>
-                        <option value="Referensi Agama">Referensi Agama</option>
-                        <option value="Novel / Fiksi Islami">Novel / Fiksi Islami</option>
-                        <option value="Modul & Lembar Kerja">Modul & Lembar Kerja</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Pilih Gambar Sampul Baru (Opsional jika ingin mengganti cover)</label>
-                    <input type="file" id="bookCoverFile" accept="image/*">
-                </div>
-                <div class="form-group">
-                    <label>Link File PDF Buku (Contoh: Link Google Drive PDF)</label>
-                    <input type="url" id="bookFileUrl" placeholder="https://drive.google.com/file/d/..." required>
-                </div>
-                <button type="submit" id="btnSubmitBook" class="btn-submit"><i class="fas fa-upload"></i> Unggah Buku ke E-Perpus</button>
-                <button type="button" id="btnCancelEdit" class="btn-cancel" onclick="cancelEdit()">Batal Edit</button>
-            </form>
+        <!-- TOMBOL TAB NAVIGASI -->
+        <div class="admin-tabs">
+            <button class="admin-tab-btn active" onclick="switchTab('upload-panel')"><i class="fas fa-upload"></i> Upload Buku Baru</button>
+            <button class="admin-tab-btn" onclick="switchTab('manage-panel')"><i class="fas fa-list"></i> Kelola Buku Tersimpan</button>
         </div>
 
-        <!-- DAFTAR BUKU TERPASANG -->
-        <div class="card-form">
-            <h2>Kelola Buku Tersimpan</h2>
-            <div style="overflow-x: auto;">
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Judul Buku</th>
-                            <th>Penulis</th>
-                            <th>Kategori</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody id="admin-book-list">
-                        <tr><td colspan="4" style="text-align: center; color: #94A3B8;">Memuat data...</td></tr>
-                    </tbody>
-                </table>
+        <!-- PANEL 1: UPLOAD / EDIT BUKU -->
+        <div id="upload-panel" class="tab-panel active">
+            <div class="card-form" style="margin-bottom: 0;">
+                <h2 id="form-title">Upload Buku Digital Baru</h2>
+                <form id="bookForm">
+                    <input type="hidden" id="editBookId">
+                    <div class="form-group">
+                        <label>Judul Buku</label>
+                        <input type="text" id="bookTitle" placeholder="Contoh: Modul Fiqih Kelas VII" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Nama Penulis / Penyusun</label>
+                        <input type="text" id="bookAuthor" placeholder="Contoh: Tim Guru Agama MTsS Nurul Iman" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Kategori Buku</label>
+                        <select id="bookCategory">
+                            <option value="Buku Paket Pelajaran">Buku Paket Pelajaran</option>
+                            <option value="Referensi Agama">Referensi Agama</option>
+                            <option value="Novel / Fiksi Islami">Novel / Fiksi Islami</option>
+                            <option value="Modul & Lembar Kerja">Modul & Lembar Kerja</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Pilih Gambar Sampul Baru (Opsional jika ingin mengganti cover)</label>
+                        <input type="file" id="bookCoverFile" accept="image/*">
+                    </div>
+                    <div class="form-group">
+                        <label>Link File PDF Buku (Contoh: Link Google Drive PDF)</label>
+                        <input type="url" id="bookFileUrl" placeholder="https://drive.google.com/file/d/..." required>
+                    </div>
+                    <button type="submit" id="btnSubmitBook" class="btn-submit"><i class="fas fa-upload"></i> Unggah Buku ke E-Perpus</button>
+                    <button type="button" id="btnCancelEdit" class="btn-cancel" onclick="cancelEdit()">Batal Edit</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- PANEL 2: KELOLA BUKU TERESIMPAN -->
+        <div id="manage-panel" class="tab-panel">
+            <div class="card-form" style="margin-bottom: 0;">
+                <h2>Kelola Buku Tersimpan</h2>
+                <div style="overflow-x: auto;">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Judul Buku</th>
+                                <th>Penulis</th>
+                                <th>Kategori</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-book-list">
+                            <tr><td colspan="4" style="text-align: center; color: #94A3B8;">Memuat data...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- SCRIPT ADMIN, LOGIN, DAN EDIT E-PERPUS -->
+    <!-- SCRIPT ADMIN, LOGIN, EDIT, & TAB -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getFirestore, collection, addDoc, getDocs, getDoc, updateDoc, deleteDoc, doc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -158,7 +199,6 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // Kredensial Login Admin
         const CORRECT_USER = "admin";
         const CORRECT_PASS = "nuruliman2026";
 
@@ -190,6 +230,15 @@
             sessionStorage.removeItem("perpusLoggedIn");
             window.location.reload();
         });
+
+        // Fungsi Berpindah Tab
+        window.switchTab = function(panelId) {
+            document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById(panelId).classList.add('active');
+            event.currentTarget.classList.add('active');
+        };
 
         function compressImageToBase64(file, maxWidth = 600, quality = 0.7) {
             return new Promise((resolve, reject) => {
@@ -233,23 +282,16 @@
                 const fileUrl = document.getElementById("bookFileUrl").value;
                 const coverFile = document.getElementById("bookCoverFile").files[0];
 
-                let bookData = {
-                    title,
-                    author,
-                    category,
-                    fileUrl
-                };
+                let bookData = { title, author, category, fileUrl };
 
                 if (coverFile) {
                     bookData.cover = await compressImageToBase64(coverFile);
                 }
 
                 if (editId) {
-                    // Update Buku yang Ada
                     await updateDoc(doc(db, "books", editId), bookData);
                     alert("Buku berhasil diperbarui!");
                 } else {
-                    // Tambah Buku Baru
                     bookData.createdAt = Date.now();
                     await addDoc(collection(db, "books"), bookData);
                     alert("Buku berhasil diunggah ke E-Perpus!");
@@ -257,6 +299,11 @@
 
                 cancelEdit();
                 renderAdminBooks();
+                // Otomatis pindah ke tab kelola setelah simpan
+                document.querySelectorAll('.tab-panel')[1].classList.add('active');
+                document.querySelectorAll('.tab-panel')[0].classList.remove('active');
+                document.querySelectorAll('.admin-tab-btn')[1].classList.add('active');
+                document.querySelectorAll('.admin-tab-btn')[0].classList.remove('active');
             } catch (err) {
                 console.error(err);
                 alert("Gagal menyimpan buku: " + err.message);
@@ -312,6 +359,12 @@
                     document.getElementById("form-title").innerText = "Edit Data Buku";
                     document.getElementById("btnSubmitBook").innerHTML = `<i class="fas fa-save"></i> Simpan Perubahan`;
                     document.getElementById("btnCancelEdit").style.display = "block";
+                    
+                    // Pindah otomatis ke tab Upload/Form saat tombol Edit diklik
+                    document.querySelectorAll('.tab-panel')[0].classList.add('active');
+                    document.querySelectorAll('.tab-panel')[1].classList.remove('active');
+                    document.querySelectorAll('.admin-tab-btn')[0].classList.add('active');
+                    document.querySelectorAll('.admin-tab-btn')[1].classList.remove('active');
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 }
             } catch (e) {
