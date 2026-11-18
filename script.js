@@ -21,16 +21,10 @@ document.addEventListener("DOMContentLoaded", () => {
     // Fungsi untuk menutup semua sub-menu dropdown (baik di laptop maupun HP)
     function closeAllDropdowns() {
         document.querySelectorAll(".dropdown").forEach(drop => {
-            drop.classList.remove("open");
+            drop.classList.remove("open", "active");
             const sub = drop.querySelector(".dropdown-menu");
             if (sub) {
-                sub.style.display = "";
-                sub.style.opacity = "";
-                sub.style.visibility = "";
-                sub.style.transform = "";
-                sub.style.position = "";
-                sub.style.boxShadow = "";
-                sub.style.paddingLeft = "";
+                sub.removeAttribute("style");
             }
         });
     }
@@ -45,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
 
-        // Klik pada tombol menu utama yang punya sub-menu (Profil & Akademik) — Berlaku di Laptop & HP
+        // Klik pada tombol menu utama yang punya sub-menu (Profil & Akademik)
         document.querySelectorAll(".dropdown > a").forEach(toggleLink => {
             toggleLink.addEventListener("click", (e) => {
                 e.preventDefault();
@@ -58,17 +52,19 @@ document.addEventListener("DOMContentLoaded", () => {
                 closeAllDropdowns();
 
                 if (!isAlreadyOpen && subMenu) {
-                    parentLi.classList.add("open");
-                    subMenu.style.display = "block";
-                    subMenu.style.opacity = "1";
-                    subMenu.style.visibility = "visible";
-                    subMenu.style.transform = "translateY(0)";
+                    parentLi.classList.add("open", "active");
+                    subMenu.style.setProperty("display", "block", "important");
+                    subMenu.style.setProperty("opacity", "1", "important");
+                    subMenu.style.setProperty("visibility", "visible", "important");
+                    subMenu.style.setProperty("max-height", "500px", "important");
+                    subMenu.style.setProperty("transform", "translateY(0)", "important");
 
-                    // Khusus layar HP, susun rapi menjorok ke dalam di bawah menu induknya
+                    // Khusus layar HP/Tablet, susun rapi menjorok ke dalam di bawah menu induknya
                     if (window.innerWidth <= 992) {
-                        subMenu.style.position = "static";
-                        subMenu.style.boxShadow = "none";
-                        subMenu.style.paddingLeft = "18px";
+                        subMenu.style.setProperty("position", "static", "important");
+                        subMenu.style.setProperty("box-shadow", "none", "important");
+                        subMenu.style.setProperty("padding-left", "20px", "important");
+                        subMenu.style.setProperty("width", "100%", "important");
                     }
                 }
             });
