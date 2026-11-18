@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Perpus Digital - MTsS Nurul Iman Rejo Agung</title>
+    <!-- Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+    <style>
+        :root {
+            --navy: #0A192F;
+            --blue: #2563EB;
+            --gold: #F59E0B;
+            --light-bg: #F8FAFC;
+        }
+
+        body {
+            background-color: var(--light-bg);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* HERO BANNER E-PERPUS ESTETIK */
+        .perpus-hero {
+            background: linear-gradient(135deg, rgba(10,25,47,0.92), rgba(30,58,138,0.9)), url('perpus-bg.jpg') center/cover;
+            padding: 70px 20px;
+            text-align: center;
+            color: #FFFFFF;
+            border-bottom: 4px solid var(--gold);
+        }
+
+        .perpus-hero h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #FFFFFF;
+        }
+
+        .perpus-hero p {
+            font-size: 15px;
+            color: #E2E8F0;
+            max-width: 600px;
+            margin: 0 auto 25px auto;
+            line-height: 1.6;
+        }
+
+        /* SEARCH & FILTER BAR ESTETIK */
+        .search-container {
+            max-width: 550px;
+            margin: -25px auto 40px auto;
+            padding: 0 15px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .search-box {
+            display: flex;
+            background: #FFFFFF;
+            border-radius: 50px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            overflow: hidden;
+            border: 1px solid #E2E8F0;
+        }
+
+        .search-box input {
+            flex-grow: 1;
+            padding: 14px 22px;
+            border: none;
+            outline: none;
+            font-size: 14px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .search-box button {
+            background: var(--blue);
+            color: white;
+            border: none;
+            padding: 0 25px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .search-box button:hover {
+            background: var(--navy);
+        }
+
+        /* GRID KARTU BUKU ESTETIK */
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 25px;
+            padding-bottom: 60px;
+        }
+
+        .book-card {
+            background: #FFFFFF;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.04);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #F1F5F9;
+        }
+
+        .book-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 30px rgba(37,99,235,0.12);
+        }
+
+        .book-cover-wrapper {
+            position: relative;
+            width: 100%;
+            height: 260px;
+            background: #0A192F;
+            overflow: hidden;
+        }
+
+        .book-cover-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: 0.4s;
+        }
+
+        .book-card:hover .book-cover-wrapper img {
+            transform: scale(1.05);
+        }
+
+        .book-category-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: rgba(10, 25, 47, 0.85);
+            color: #38BDF8;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 6px;
+            backdrop-filter: blur(4px);
+        }
+
+        .book-info {
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .book-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 6px;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .book-author {
+            font-size: 12px;
+            color: #64748B;
+            margin-bottom: 16px;
+        }
+
+        .book-actions {
+            margin-top: auto;
+        }
+
+        .btn-read {
+            background-color: var(--blue);
+            color: #FFFFFF;
+            border: none;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            text-align: center;
+            text-decoration: none;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            width: 100%;
+        }
+
+        .btn-read:hover {
+            background-color: var(--navy);
+        }
+
+        /* RESPONSIF HP */
+        @media (max-width: 768px) {
+            .top-bar { display: none !important; }
+            .nav-container { padding: 10px 14px !important; gap: 8px; }
+            .logo img { width: 36px !important; height: 36px !important; margin-right: 8px !important; }
+            .logo-text h1 { font-size: 12px !important; white-space: nowrap; line-height: 1.1; }
+            .logo-text p { font-size: 10px !important; }
+            .nav-actions .btn-primary { padding: 6px 10px !important; font-size: 11px !important; }
+            .perpus-hero { padding: 45px 15px; }
+            .perpus-hero h1 { font-size: 22px; }
+            .perpus-hero p { font-size: 13px; }
+            .search-container { margin-top: -20px; margin-bottom: 30px; }
+            .books-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+            .book-cover-wrapper { height: 180px; }
+            .book-info { padding: 12px; }
+            .book-title { font-size: 13px; }
+            .book-author { font-size: 11px; margin-bottom: 10px; }
+            .btn-read { padding: 8px; font-size: 11px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- TOP BAR -->
+    <div class="top-bar">
+        <div class="container top-bar-container">
+            <div class="top-info">
+                <span><i class="fas fa-map-marker-alt"></i> Rejo Agung, Kec. Tegineneng, Kab. Pesawaran, Lampung</span>
+                <span><i class="fas fa-envelope"></i> mtsnurulimanrejoagung@gmail.com</span>
+            </div>
+            <div class="top-social">
+                <a href="https://www.instagram.com/mtsnurulimanrejoagung?xtok=MWM3NW56czNtanF1ag==" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.facebook.com/share/18sLQh4SEs/" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://www.tiktok.com/@mtsnurulimanrejoagung?_r=1&_t=ZS-9BQSEXSqoWA" target="_blank" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                <a href="https://youtube.com/@mtsnurulimanrejoagung?si=ZpMD5FcAGb5L1xf3" target="_blank" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <!-- HEADER / NAVBAR -->
+    <header class="header">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <img src="logo.jpeg" alt="Logo MTsS Nurul Iman" style="width: 50px; height: 50px; object-fit: contain; border-radius: 8px; margin-right: 12px;">
+                <div class="logo-text">
+                    <h1>E-PERPUS DIGITAL</h1>
+                    <p>MTsS Nurul Iman Rejo Agung</p>
+                </div>
+            </a>
+
+            <div class="nav-actions">
+                <a href="index.html" class="btn-primary"><i class="fas fa-arrow-left"></i> Beranda</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO SECTION ESTETIK -->
+    <div class="perpus-hero">
+        <div class="container">
+            <h1><i class="fas fa-book-reader" style="color: var(--gold);"></i> Perpustakaan Digital Madrasah</h1>
+            <p>Jelajahi koleksi buku pelajaran, modul pembelajaran interaktif, dan referensi keislaman pilihan untuk mendukung kegiatan belajar siswa.</p>
+        </div>
+    </div>
+
+    <!-- KOTAK PENCARIAN -->
+    <div class="search-container">
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Cari judul buku atau penulis...">
+            <button type="button" id="searchBtn"><i class="fas fa-search"></i></button>
+        </div>
+    </div>
+
+    <!-- KATALOG BUKU -->
+    <section class="section" style="padding-top: 0;">
+        <div class="container">
+            <div class="books-grid" id="books-container">
+                <div class="empty-state" style="grid-column: 1 / -1; text-align: center; padding: 50px;">
+                    <i class="fas fa-spinner fa-spin" style="font-size: 32px; color: var(--blue); margin-bottom: 12px;"></i>
+                    <p style="color: #64748B;">Memuat koleksi buku perpustakaan...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container footer-grid">
+            <div class="footer-col">
+                <div class="logo" style="margin-bottom: 15px;">
+                    <img src="logo.jpeg" alt="Logo MTsS Nurul Iman" style="width: 50px; height: 50px; object-fit: contain; border-radius: 8px; margin-right: 12px;">
+                    <div class="logo-text">
+                        <h1 style="color: white;">MTsS NURUL IMAN</h1>
+                        <p style="color: var(--light-blue);">Rejo Agung</p>
+                    </div>
+                </div>
+                <p>Mencetak generasi Islami yang cerdas, berakhlak mulia, dan siap bersaing di era digital.</p>
+            </div>
+            <div class="footer-col">
+                <h3>Menu Cepat</h3>
+                <ul>
+                    <li><a href="index.html#beranda">Beranda</a></li>
+                    <li><a href="index.html#profil">Profil Madrasah</a></li>
+                    <li><a href="index.html#akademik">Akademik</a></li>
+                    <li><a href="index.html#prestasi">Prestasi</a></li>
+                    <li><a href="berita.html">Berita Terbaru</a></li>
+                    <li><a href="admin.html" target="_blank">Login Admin</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Jam Layanan E-Perpus</h3>
+                <p>Akses Online: 24 Jam Nonstop</p>
+                <p>Peminjaman Fisik di Perpus Madrasah:</p>
+                <p>Senin - Sabtu: 08.00 - 13.00 WIB</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 MTsS Nurul Iman Rejo Agung. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- SCRIPT FIREBASE E-PERPUS DENGAN PENCARIAN -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDCokgJrrjQk7YTTw2iu4-p5S6SvbCCV0g",
+            authDomain: "websiteni2026.firebaseapp.com",
+            projectId: "websiteni2026",
+            storageBucket: "websiteni2026.firebasestorage.app",
+            messagingSenderId: "596706822852",
+            appId: "1:596706822852:web:febe256e797e71ca0cd791",
+            measurementId: "G-Z1XKB3K9L2"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        let allBooks = [];
+
+        async function loadBooks() {
+            const container = document.getElementById("books-container");
+            try {
+                const q = query(collection(db, "books"), orderBy("createdAt", "desc"));
+                const snapshot = await getDocs(q);
+
+                if (snapshot.empty) {
+                    container.innerHTML = `
+                        <div class="empty-state" style="grid-column: 1 / -1; text-align: center; padding: 50px; background: white; border-radius: 12px;">
+                            <i class="fas fa-books" style="font-size: 48px; color: #94A3B8; margin-bottom: 15px;"></i>
+                            <p style="color: #64748B; font-weight: 500;">Belum ada buku digital yang diunggah ke perpustakaan.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                allBooks = [];
+                snapshot.forEach(docSnap => {
+                    allBooks.push({ id: docSnap.id, ...docSnap.data() });
+                });
+
+                displayBooks(allBooks);
+            } catch (e) {
+                console.error(e);
+                container.innerHTML = `<div class="empty-state" style="grid-column: 1 / -1;"><p style="color:red;">Gagal memuat katalog buku.</p></div>`;
+            }
+        }
+
+        function displayBooks(books) {
+            const container = document.getElementById("books-container");
+            container.innerHTML = "";
+
+            books.forEach(book => {
+                const card = document.createElement("div");
+                card.className = "book-card";
+                card.innerHTML = `
+                    <div class="book-cover-wrapper">
+                        <span class="book-category-badge">${book.category || 'Umum'}</span>
+                        ${book.cover ? `<img src="${book.cover}" alt="${book.title}">` : `<div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:#FFFFFF;"><i class="fas fa-book-open fa-3x" style="color: rgba(255,255,255,0.3);"></i></div>`}
+                    </div>
+                    <div class="book-info">
+                        <h3 class="book-title" title="${book.title}">${book.title}</h3>
+                        <p class="book-author"><i class="fas fa-pen-nib" style="font-size: 10px; margin-right: 4px;"></i> ${book.author}</p>
+                        <div class="book-actions">
+                            <a href="${book.fileUrl}" target="_blank" class="btn-read">
+                                <i class="fas fa-book-reader"></i> Baca Online
+                            </a>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Fitur Pencarian Buku
+        document.getElementById("searchBtn").addEventListener("click", filterBooks);
+        document.getElementById("searchInput").addEventListener("keyup", filterBooks);
+
+        function filterBooks() {
+            const keyword = document.getElementById("searchInput").value.toLowerCase();
+            const filtered = allBooks.filter(b => 
+                b.title.toLowerCase().includes(keyword) || 
+                b.author.toLowerCase().includes(keyword) ||
+                (b.category && b.category.toLowerCase().includes(keyword))
+            );
+            displayBooks(filtered);
+        }
+
+        loadBooks();
+    </script>
+</body>
+</html>
