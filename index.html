@@ -10,6 +10,28 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Main Stylesheet -->
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* Penyesuaian khusus tampilan HP agar header rapi & proporsional */
+        @media (max-width: 768px) {
+            .top-bar { display: none !important; }
+            .nav-container { padding: 8px 10px !important; gap: 4px !important; }
+            .logo { display: flex !important; align-items: center !important; margin-right: auto !important; }
+            .logo img { width: 34px !important; height: 34px !important; margin-right: 6px !important; }
+            .logo-text h1 { font-size: 11px !important; white-space: nowrap !important; line-height: 1.1 !important; font-weight: 700 !important; }
+            .logo-text p { font-size: 9px !important; white-space: nowrap !important; }
+            
+            .nav-actions { display: flex !important; align-items: center !important; gap: 4px !important; }
+            .nav-actions .btn-primary,
+            .nav-actions .btn-gold {
+                padding: 4px 8px !important;
+                font-size: 10px !important;
+                white-space: nowrap !important;
+                border-radius: 6px !important;
+                margin-right: 0 !important;
+            }
+            .mobile-menu-btn { font-size: 16px !important; padding: 4px 6px !important; }
+        }
+    </style>
 </head>
 <body>
 
@@ -68,7 +90,7 @@
             </nav>
 
             <div class="nav-actions">
-                <a href="e-perpus.html" target="_blank" class="btn-primary" style="background-color: var(--navy); margin-right: 5px;"><i class="fas fa-book-reader"></i> E-Perpus</a>
+                <a href="e-perpus.html" target="_blank" class="btn-primary" style="background-color: var(--navy);"><i class="fas fa-book-reader"></i> E-Perpus</a>
                 <a href="#pmbm" class="btn-gold" id="pmbmBtn">PMBM 2027</a>
                 <button class="mobile-menu-btn" id="menuBtn" aria-label="Toggle Menu">
                     <i class="fas fa-bars"></i>
@@ -370,7 +392,7 @@
     <section id="pmbm" class="section pmbm-section">
         <div class="container">
             <div class="pmbm-box">
-                <h2>Penerimaan Murid Baru Madrasah (PMBM) 2026/2027</h2>
+                <h2>Penerimaan Murid Baru Madrasah (PMBM) 2027/2028</h2>
                 <p>Mari bergabung bersama MTsS Nurul Iman Rejo Agung. Pendaftaran dibuka untuk lulusan SD/MI sederajat.</p>
                 <div class="pmbm-steps">
                     <div class="step"><span>1</span><p>Pendaftaran Online/Offline</p></div>
