@@ -10,6 +10,20 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Main Stylesheet -->
     <link rel="stylesheet" href="style.css">
+    <style>
+        @media (max-width: 768px) {
+            .top-bar { display: none !important; }
+            .nav-container { padding: 10px 14px !important; gap: 8px; }
+            .logo img { width: 38px !important; height: 38px !important; margin-right: 8px !important; }
+            .logo-text h1 { font-size: 13px !important; white-space: nowrap; }
+            .logo-text p { font-size: 11px !important; }
+            .nav-actions .btn-primary { padding: 7px 12px !important; font-size: 11px !important; white-space: nowrap; }
+            .section { padding: 35px 0 !important; }
+            .section-title { margin-bottom: 25px !important; }
+            .section-title h2 { font-size: 20px !important; }
+            .section-title p { font-size: 13px !important; }
+        }
+    </style>
 </head>
 <body>
 
@@ -41,7 +55,7 @@
             </a>
 
             <div class="nav-actions">
-                <a href="index.html" class="btn-primary"><i class="fas fa-arrow-left"></i> Kembali ke Beranda</a>
+                <a href="index.html" class="btn-primary"><i class="fas fa-arrow-left"></i> Beranda</a>
             </div>
         </div>
     </header>
