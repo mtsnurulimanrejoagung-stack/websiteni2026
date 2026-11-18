@@ -17,6 +17,7 @@
             --gray-dark: #334155;
             --border-color: #E2E8F0;
             --danger: #EF4444;
+            --warning: #D97706;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
         body { background-color: var(--gray-light); color: var(--gray-dark); min-height: 100vh; padding: 30px; }
@@ -39,11 +40,18 @@
         .form-group { margin-bottom: 18px; text-align: left; }
         .form-group label { display: block; font-size: 13px; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
         .form-group input, .form-group select { width: 100%; padding: 10px 12px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 14px; outline: none; }
+        
         .btn-submit { background-color: var(--blue); color: var(--white); border: none; padding: 12px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; width: 100%; }
         .btn-submit:hover { background-color: var(--navy-light); }
+        
+        .btn-cancel { background-color: #64748B; color: var(--white); border: none; padding: 12px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; width: 100%; margin-top: 10px; display: none; }
+        .btn-cancel:hover { background-color: #475569; }
+
         .data-table { width: 100%; border-collapse: collapse; margin-top: 15px; background: var(--white); border-radius: 8px; overflow: hidden; }
         .data-table th, .data-table td { padding: 12px 15px; text-align: left; font-size: 13px; border-bottom: 1px solid var(--border-color); }
         .data-table th { background-color: var(--navy); color: var(--white); }
+        
+        .btn-warning { background-color: var(--warning); color: white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; margin-right: 5px; }
         .btn-danger { background-color: var(--danger); color: white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; }
     </style>
 </head>
@@ -76,10 +84,11 @@
             </div>
         </div>
 
-        <!-- FORM TAMBAH BUKU -->
+        <!-- FORM TAMBAH / EDIT BUKU -->
         <div class="card-form">
-            <h2>Upload Buku Digital Baru</h2>
+            <h2 id="form-title">Upload Buku Digital Baru</h2>
             <form id="bookForm">
+                <input type="hidden" id="editBookId">
                 <div class="form-group">
                     <label>Judul Buku</label>
                     <input type="text" id="bookTitle" placeholder="Contoh: Modul Fiqih Kelas VII" required>
@@ -98,14 +107,15 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>Pilih Gambar Sampul (Cover Buku)</label>
-                    <input type="file" id="bookCoverFile" accept="image/*" required>
+                    <label>Pilih Gambar Sampul Baru (Opsional jika ingin mengganti cover)</label>
+                    <input type="file" id="bookCoverFile" accept="image/*">
                 </div>
                 <div class="form-group">
                     <label>Link File PDF Buku (Contoh: Link Google Drive PDF)</label>
                     <input type="url" id="bookFileUrl" placeholder="https://drive.google.com/file/d/..." required>
                 </div>
                 <button type="submit" id="btnSubmitBook" class="btn-submit"><i class="fas fa-upload"></i> Unggah Buku ke E-Perpus</button>
+                <button type="button" id="btnCancelEdit" class="btn-cancel" onclick="cancelEdit()">Batal Edit</button>
             </form>
         </div>
 
@@ -130,10 +140,10 @@
         </div>
     </div>
 
-    <!-- SCRIPT ADMIN & LOGIN E-PERPUS -->
+    <!-- SCRIPT ADMIN, LOGIN, DAN EDIT E-PERPUS -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, getDocs, getDoc, updateDoc, deleteDoc, doc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDCokgJrrjQk7YTTw2iu4-p5S6SvbCCV0g",
@@ -155,7 +165,6 @@
         const loginSection = document.getElementById("login-section");
         const adminDashboard = document.getElementById("admin-dashboard");
 
-        // Cek apakah sudah login sebelumnya di sesi ini
         if (sessionStorage.getItem("perpusLoggedIn") === "true") {
             loginSection.style.display = "none";
             adminDashboard.style.display = "block";
@@ -213,8 +222,9 @@
         bookForm.addEventListener("submit", async (e) => {
             e.preventDefault();
             const btn = document.getElementById("btnSubmitBook");
+            const editId = document.getElementById("editBookId").value;
             btn.disabled = true;
-            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Mengunggah...`;
+            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Menyimpan...`;
 
             try {
                 const title = document.getElementById("bookTitle").value;
@@ -223,29 +233,36 @@
                 const fileUrl = document.getElementById("bookFileUrl").value;
                 const coverFile = document.getElementById("bookCoverFile").files[0];
 
-                let coverBase64 = "";
-                if (coverFile) {
-                    coverBase64 = await compressImageToBase64(coverFile);
-                }
-
-                await addDoc(collection(db, "books"), {
+                let bookData = {
                     title,
                     author,
                     category,
-                    fileUrl,
-                    cover: coverBase64,
-                    createdAt: Date.now()
-                });
+                    fileUrl
+                };
 
-                alert("Buku berhasil diunggah ke E-Perpus!");
-                bookForm.reset();
+                if (coverFile) {
+                    bookData.cover = await compressImageToBase64(coverFile);
+                }
+
+                if (editId) {
+                    // Update Buku yang Ada
+                    await updateDoc(doc(db, "books", editId), bookData);
+                    alert("Buku berhasil diperbarui!");
+                } else {
+                    // Tambah Buku Baru
+                    bookData.createdAt = Date.now();
+                    await addDoc(collection(db, "books"), bookData);
+                    alert("Buku berhasil diunggah ke E-Perpus!");
+                }
+
+                cancelEdit();
                 renderAdminBooks();
             } catch (err) {
                 console.error(err);
-                alert("Gagal mengunggah buku: " + err.message);
+                alert("Gagal menyimpan buku: " + err.message);
             } finally {
                 btn.disabled = false;
-                btn.innerHTML = `<i class="fas fa-upload"></i> Unggah Buku ke E-Perpus`;
+                btn.innerHTML = editId ? `<i class="fas fa-save"></i> Simpan Perubahan` : `<i class="fas fa-upload"></i> Unggah Buku ke E-Perpus`;
             }
         });
 
@@ -269,6 +286,7 @@
                         <td>${book.author}</td>
                         <td>${book.category}</td>
                         <td>
+                            <button class="btn-warning" onclick="editBook('${docSnap.id}')"><i class="fas fa-edit"></i> Edit</button>
                             <button class="btn-danger" onclick="deleteBook('${docSnap.id}')"><i class="fas fa-trash"></i> Hapus</button>
                         </td>
                     `;
@@ -279,6 +297,35 @@
                 tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: red;">Gagal memuat daftar buku.</td></tr>`;
             }
         }
+
+        window.editBook = async function(docId) {
+            try {
+                const docSnap = await getDoc(doc(db, "books", docId));
+                if (docSnap.exists()) {
+                    const book = docSnap.data();
+                    document.getElementById("editBookId").value = docId;
+                    document.getElementById("bookTitle").value = book.title;
+                    document.getElementById("bookAuthor").value = book.author;
+                    document.getElementById("bookCategory").value = book.category;
+                    document.getElementById("bookFileUrl").value = book.fileUrl;
+                    
+                    document.getElementById("form-title").innerText = "Edit Data Buku";
+                    document.getElementById("btnSubmitBook").innerHTML = `<i class="fas fa-save"></i> Simpan Perubahan`;
+                    document.getElementById("btnCancelEdit").style.display = "block";
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            } catch (e) {
+                alert("Gagal memuat data buku untuk diedit: " + e.message);
+            }
+        };
+
+        window.cancelEdit = function() {
+            document.getElementById("bookForm").reset();
+            document.getElementById("editBookId").value = "";
+            document.getElementById("form-title").innerText = "Upload Buku Digital Baru";
+            document.getElementById("btnSubmitBook").innerHTML = `<i class="fas fa-upload"></i> Unggah Buku ke E-Perpus`;
+            document.getElementById("btnCancelEdit").style.display = "none";
+        };
 
         window.deleteBook = async function(docId) {
             if (confirm("Yakin ingin menghapus buku ini dari E-Perpus?")) {
