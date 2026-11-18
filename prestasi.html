@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Lengkap Prestasi - MTsS Nurul Iman Rejo Agung</title>
+    <!-- Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- TOP BAR -->
+    <div class="top-bar">
+        <div class="container top-bar-container">
+            <div class="top-info">
+                <span><i class="fas fa-map-marker-alt"></i> Rejo Agung, Kec. Tegineneng, Kab. Pesawaran, Lampung</span>
+                <span><i class="fas fa-envelope"></i> mtsnurulimanrejoagung@gmail.com</span>
+            </div>
+            <div class="top-social">
+                <a href="https://www.instagram.com/mtsnurulimanrejoagung?xtok=MWM3NW56czNtanF1ag==" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.facebook.com/share/18sLQh4SEs/" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://www.tiktok.com/@mtsnurulimanrejoagung?_r=1&_t=ZS-9BQSEXSqoWA" target="_blank" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                <a href="https://youtube.com/@mtsnurulimanrejoagung?si=ZpMD5FcAGb5L1xf3" target="_blank" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <!-- HEADER / NAVBAR -->
+    <header class="header">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <img src="logo.jpeg" alt="Logo MTsS Nurul Iman" style="width: 50px; height: 50px; object-fit: contain; border-radius: 8px; margin-right: 12px;">
+                <div class="logo-text">
+                    <h1>MTsS NURUL IMAN</h1>
+                    <p>Rejo Agung</p>
+                </div>
+            </a>
+
+            <div class="nav-actions">
+                <a href="index.html" class="btn-primary"><i class="fas fa-arrow-left"></i> Kembali ke Beranda</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- DAFTAR LENGKAP PRESTASI -->
+    <section class="section bg-light" style="min-height: 70vh;">
+        <div class="container">
+            <div class="section-title">
+                <h2>Prestasi Madrasah</h2>
+                <p>Daftar lengkap capaian dan penghargaan siswa-siswi MTsS Nurul Iman Rejo Agung</p>
+            </div>
+            <div class="grid-3" id="all-prestasi-container">
+                <div class="empty-state">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>Memuat daftar prestasi...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container footer-grid">
+            <div class="footer-col">
+                <div class="logo" style="margin-bottom: 15px;">
+                    <img src="logo.jpeg" alt="Logo MTsS Nurul Iman" style="width: 50px; height: 50px; object-fit: contain; border-radius: 8px; margin-right: 12px;">
+                    <div class="logo-text">
+                        <h1 style="color: white;">MTsS NURUL IMAN</h1>
+                        <p style="color: var(--light-blue);">Rejo Agung</p>
+                    </div>
+                </div>
+                <p>Mencetak generasi Islami yang cerdas, berakhlak mulia, dan siap bersaing di era digital.</p>
+            </div>
+            <div class="footer-col">
+                <h3>Menu Cepat</h3>
+                <ul>
+                    <li><a href="index.html#beranda">Beranda</a></li>
+                    <li><a href="index.html#profil">Profil Madrasah</a></li>
+                    <li><a href="index.html#akademik">Akademik</a></li>
+                    <li><a href="index.html#prestasi">Prestasi</a></li>
+                    <li><a href="index.html#berita">Berita Terbaru</a></li>
+                    <li><a href="admin.html" target="_blank">Login Admin</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Jam Kegiatan Belajar Mengajar</h3>
+                <p>Senin - Kamis: 07.15 - 13.50 WIB</p>
+                <p>Jumat: 07.15 - 11.00 WIB</p>
+                <p>Sabtu: 07.15 - 11.30 WIB</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 MTsS Nurul Iman Rejo Agung. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDCokgJrrjQk7YTTw2iu4-p5S6SvbCCV0g",
+            authDomain: "websiteni2026.firebaseapp.com",
+            projectId: "websiteni2026",
+            storageBucket: "websiteni2026.firebasestorage.app",
+            messagingSenderId: "596706822852",
+            appId: "1:596706822852:web:febe256e797e71ca0cd791",
+            measurementId: "G-Z1XKB3K9L2"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        async function loadAllPrestasi() {
+            const container = document.getElementById("all-prestasi-container");
+            try {
+                const snapshot = await getDocs(collection(db, "prestasi"));
+                if (snapshot.empty) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-trophy"></i>
+                            <p>Belum ada data prestasi yang dipublikasikan.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const items = [];
+                snapshot.forEach(docSnap => items.push(docSnap.data()));
+
+                // Urutkan berdasarkan nomor urutan (1, 2, 3, dst.), jika sama/kosong urutkan terbaru
+                items.sort((a, b) => {
+                    const orderA = (a.order !== undefined && a.order !== null && a.order !== "") ? Number(a.order) : 9999;
+                    const orderB = (b.order !== undefined && b.order !== null && b.order !== "") ? Number(b.order) : 9999;
+                    if (orderA !== orderB) return orderA - orderB;
+                    return (b.createdAt || 0) - (a.createdAt || 0);
+                });
+
+                container.innerHTML = "";
+                items.forEach(item => {
+                    const card = document.createElement("div");
+                    card.className = "info-item";
+                    card.innerHTML = `
+                        <i class="fas fa-trophy" style="color: #F59E0B;"></i>
+                        <div>
+                            <span style="font-size: 12px; font-weight: 600; color: #2563EB; display: block; margin-bottom: 4px;">${item.level}</span>
+                            <h4>${item.title}</h4>
+                            <p>${item.description}</p>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            } catch (e) {
+                console.error("Gagal memuat prestasi:", e);
+                container.innerHTML = `<div class="empty-state"><p>Gagal memuat data prestasi.</p></div>`;
+            }
+        }
+
+        loadAllPrestasi();
+    </script>
+</body>
+</html>
