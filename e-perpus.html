@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>E-Perpus - MTsS Nurul Iman Rejo Agung</title>
+    <title>E-Perpus Digital - MTsS Nurul Iman Rejo Agung</title>
     <!-- Google Fonts: Poppins -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- FontAwesome Icons -->
@@ -130,24 +130,23 @@
             transform: scale(1.05);
         }
 
-        .book-category-badge {
-            position: absolute;
-            top: 12px;
-            left: 12px;
-            background: rgba(10, 25, 47, 0.85);
-            color: #38BDF8;
-            font-size: 11px;
-            font-weight: 600;
-            padding: 4px 10px;
-            border-radius: 6px;
-            backdrop-filter: blur(4px);
-        }
-
         .book-info {
             padding: 18px;
             display: flex;
             flex-direction: column;
             flex-grow: 1;
+        }
+
+        /* LABEL KATEGORI DI LUAR (DI ATAS JUDUL) */
+        .book-category-tag {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--blue);
+            background: #EFF6FF;
+            padding: 3px 10px;
+            border-radius: 6px;
+            width: fit-content;
+            margin-bottom: 8px;
         }
 
         .book-title {
@@ -239,7 +238,7 @@
             <a href="index.html" class="logo">
                 <img src="logo.jpeg" alt="Logo MTsS Nurul Iman" style="width: 50px; height: 50px; object-fit: contain; border-radius: 8px; margin-right: 12px;">
                 <div class="logo-text">
-                    <h1>E-PERPUS</h1>
+                    <h1>E-PERPUS DIGITAL</h1>
                     <p>MTsS Nurul Iman Rejo Agung</p>
                 </div>
             </a>
@@ -371,10 +370,10 @@
                 card.className = "book-card";
                 card.innerHTML = `
                     <div class="book-cover-wrapper">
-                        <span class="book-category-badge">${book.category || 'Umum'}</span>
                         ${book.cover ? `<img src="${book.cover}" alt="${book.title}">` : `<div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:#FFFFFF;"><i class="fas fa-book-open fa-3x" style="color: rgba(255,255,255,0.3);"></i></div>`}
                     </div>
                     <div class="book-info">
+                        <span class="book-category-tag">${book.category || 'Umum'}</span>
                         <h3 class="book-title" title="${book.title}">${book.title}</h3>
                         <p class="book-author"><i class="fas fa-pen-nib" style="font-size: 10px; margin-right: 4px;"></i> ${book.author}</p>
                         <div class="book-actions">
