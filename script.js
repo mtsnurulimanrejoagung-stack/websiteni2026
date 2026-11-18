@@ -59,7 +59,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     subMenu.style.setProperty("max-height", "500px", "important");
                     subMenu.style.setProperty("transform", "translateY(0)", "important");
 
-                    // Khusus layar HP/Tablet, susun rapi menjorok ke dalam di bawah menu induknya
                     if (window.innerWidth <= 992) {
                         subMenu.style.setProperty("position", "static", "important");
                         subMenu.style.setProperty("box-shadow", "none", "important");
@@ -70,7 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         });
 
-        // Klik pada link biasa atau link di dalam sub-menu (Visi & Misi, Struktur, dll)
+        // Klik pada link biasa atau link di dalam sub-menu
         navbar.querySelectorAll("a").forEach(link => {
             if (!link.parentElement.classList.contains("dropdown")) {
                 link.addEventListener("click", () => {
@@ -192,14 +191,14 @@ async function loadPublicGallery() {
     }
 }
 
-// Load Prestasi Publik
+// Load Prestasi Publik (Maksimal 3 Teratas Sesuai Urutan + Tombol Lihat Selanjutnya)
 async function loadPublicPrestasi() {
     const container = document.getElementById("prestasi-container");
+    const moreWrapper = document.getElementById("prestasi-more-wrapper");
     if (!container) return;
 
     try {
-        const q = query(collection(db, "prestasi"), orderBy("createdAt", "desc"));
-        const snapshot = await getDocs(q);
+        const snapshot = await getDocs(collection(db, "prestasi"));
 
         if (snapshot.empty) {
             container.innerHTML = `
@@ -208,12 +207,26 @@ async function loadPublicPrestasi() {
                     <p>Belum ada data prestasi yang dipublikasikan.</p>
                 </div>
             `;
+            if (moreWrapper) moreWrapper.style.display = "none";
             return;
         }
 
+        const items = [];
+        snapshot.forEach(docSnap => items.push(docSnap.data()));
+
+        // Urutkan berdasarkan nomor urutan (1, 2, 3, dst.), jika sama/kosong urutkan terbaru
+        items.sort((a, b) => {
+            const orderA = (a.order !== undefined && a.order !== null && a.order !== "") ? Number(a.order) : 9999;
+            const orderB = (b.order !== undefined && b.order !== null && b.order !== "") ? Number(b.order) : 9999;
+            if (orderA !== orderB) return orderA - orderB;
+            return (b.createdAt || 0) - (a.createdAt || 0);
+        });
+
+        // Ambil maksimal 3 teratas untuk beranda
+        const topThree = items.slice(0, 3);
+
         container.innerHTML = "";
-        snapshot.forEach(docSnap => {
-            const item = docSnap.data();
+        topThree.forEach(item => {
             const card = document.createElement("div");
             card.className = "info-item";
             card.innerHTML = `
@@ -226,6 +239,11 @@ async function loadPublicPrestasi() {
             `;
             container.appendChild(card);
         });
+
+        // Tampilkan tombol "Lihat Prestasi Selanjutnya" jika total data > 3
+        if (moreWrapper) {
+            moreWrapper.style.display = items.length > 3 ? "block" : "none";
+        }
     } catch (e) {
         console.error("Gagal memuat prestasi:", e);
     }
