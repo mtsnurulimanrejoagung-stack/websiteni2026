@@ -15,20 +15,48 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 document.addEventListener("DOMContentLoaded", () => {
-    // Mobile Menu Toggle & Auto-Close saat link diklik
     const menuBtn = document.getElementById("menuBtn");
     const navbar = document.getElementById("navbar");
+
     if (menuBtn && navbar) {
+        // Toggle buka/tutup menu garis tiga di HP
         menuBtn.addEventListener("click", () => {
             navbar.classList.toggle("active");
         });
 
-        // Tutup menu otomatis saat item menu diklik (kecuali tombol induk dropdown)
+        // Atur klik pada menu utama & sub-menu dropdown di HP
         navbar.querySelectorAll("a").forEach(link => {
-            link.addEventListener("click", () => {
+            link.addEventListener("click", (e) => {
                 const parentLi = link.parentElement;
-                if (!parentLi.classList.contains("dropdown")) {
+
+                if (parentLi.classList.contains("dropdown")) {
+                    // Khusus di layar HP/Tablet: ketuk Profil / Akademik untuk membuka/menutup sub-menu
+                    if (window.innerWidth <= 992) {
+                        e.preventDefault();
+                        const dropdownMenu = parentLi.querySelector(".dropdown-menu");
+                        const isOpen = parentLi.classList.contains("open");
+
+                        // Tutup dropdown lain jika ada yang terbuka
+                        navbar.querySelectorAll(".dropdown").forEach(d => {
+                            d.classList.remove("open");
+                            const dm = d.querySelector(".dropdown-menu");
+                            if (dm) dm.style.display = "";
+                        });
+
+                        // Buka dropdown yang diketuk
+                        if (!isOpen && dropdownMenu) {
+                            parentLi.classList.add("open");
+                            dropdownMenu.style.display = "block";
+                        }
+                    }
+                } else {
+                    // Jika item menu biasa atau item sub-menu diklik, tutup menu mobile & reset dropdown
                     navbar.classList.remove("active");
+                    navbar.querySelectorAll(".dropdown").forEach(d => {
+                        d.classList.remove("open");
+                        const dm = d.querySelector(".dropdown-menu");
+                        if (dm) dm.style.display = "";
+                    });
                 }
             });
         });
