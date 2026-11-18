@@ -18,50 +18,78 @@ document.addEventListener("DOMContentLoaded", () => {
     const menuBtn = document.getElementById("menuBtn");
     const navbar = document.getElementById("navbar");
 
-    // Fungsi bantu menutup menu utama & sub-menu
-    function closeMobileMenu() {
-        if (!navbar) return;
-        navbar.classList.remove("active");
-        navbar.querySelectorAll(".dropdown-menu").forEach(dm => {
-            dm.style.display = "";
-            dm.style.opacity = "";
-            dm.style.visibility = "";
-            dm.style.position = "";
-            dm.style.transform = "";
-            dm.style.boxShadow = "";
+    // Fungsi untuk menutup semua sub-menu dropdown (baik di laptop maupun HP)
+    function closeAllDropdowns() {
+        document.querySelectorAll(".dropdown").forEach(drop => {
+            drop.classList.remove("open");
+            const sub = drop.querySelector(".dropdown-menu");
+            if (sub) {
+                sub.style.display = "";
+                sub.style.opacity = "";
+                sub.style.visibility = "";
+                sub.style.transform = "";
+                sub.style.position = "";
+                sub.style.boxShadow = "";
+                sub.style.paddingLeft = "";
+            }
         });
     }
 
     if (menuBtn && navbar) {
-        // Buka/tutup menu garis tiga
-        menuBtn.addEventListener("click", () => {
+        // Buka/tutup menu garis tiga di HP
+        menuBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
             navbar.classList.toggle("active");
-            if (navbar.classList.contains("active") && window.innerWidth <= 992) {
-                // Tampilkan langsung semua sub-menu di HP agar langsung terlihat & bisa diklik
-                navbar.querySelectorAll(".dropdown-menu").forEach(dm => {
-                    dm.style.display = "block";
-                    dm.style.opacity = "1";
-                    dm.style.visibility = "visible";
-                    dm.style.position = "static";
-                    dm.style.transform = "none";
-                    dm.style.boxShadow = "none";
-                    dm.style.paddingLeft = "20px";
-                });
-            } else {
-                closeMobileMenu();
+            if (!navbar.classList.contains("active")) {
+                closeAllDropdowns();
             }
         });
 
-        // Saat semua link (Profil, Akademik, Visi & Misi, Prestasi, dll) diklik:
-        // Biarkan browser melompat ke section tujuannya, lalu tutup menu otomatis
-        navbar.querySelectorAll("a").forEach(link => {
-            link.addEventListener("click", () => {
-                if (window.innerWidth <= 992) {
-                    setTimeout(() => {
-                        closeMobileMenu();
-                    }, 150);
+        // Klik pada tombol menu utama yang punya sub-menu (Profil & Akademik) — Berlaku di Laptop & HP
+        document.querySelectorAll(".dropdown > a").forEach(toggleLink => {
+            toggleLink.addEventListener("click", (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+
+                const parentLi = toggleLink.parentElement;
+                const subMenu = parentLi.querySelector(".dropdown-menu");
+                const isAlreadyOpen = parentLi.classList.contains("open");
+
+                closeAllDropdowns();
+
+                if (!isAlreadyOpen && subMenu) {
+                    parentLi.classList.add("open");
+                    subMenu.style.display = "block";
+                    subMenu.style.opacity = "1";
+                    subMenu.style.visibility = "visible";
+                    subMenu.style.transform = "translateY(0)";
+
+                    // Khusus layar HP, susun rapi menjorok ke dalam di bawah menu induknya
+                    if (window.innerWidth <= 992) {
+                        subMenu.style.position = "static";
+                        subMenu.style.boxShadow = "none";
+                        subMenu.style.paddingLeft = "18px";
+                    }
                 }
             });
+        });
+
+        // Klik pada link biasa atau link di dalam sub-menu (Visi & Misi, Struktur, dll)
+        navbar.querySelectorAll("a").forEach(link => {
+            if (!link.parentElement.classList.contains("dropdown")) {
+                link.addEventListener("click", () => {
+                    closeAllDropdowns();
+                    navbar.classList.remove("active");
+                });
+            }
+        });
+
+        // Tutup dropdown otomatis jika klik di luar area menu
+        document.addEventListener("click", (e) => {
+            if (!navbar.contains(e.target) && !menuBtn.contains(e.target)) {
+                closeAllDropdowns();
+                navbar.classList.remove("active");
+            }
         });
     }
 
