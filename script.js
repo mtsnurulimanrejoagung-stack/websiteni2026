@@ -18,63 +18,48 @@ document.addEventListener("DOMContentLoaded", () => {
     const menuBtn = document.getElementById("menuBtn");
     const navbar = document.getElementById("navbar");
 
-    // Fungsi bantu untuk menutup & mereset semua dropdown mobile
-    function resetMobileDropdowns() {
+    // Fungsi bantu menutup menu utama & sub-menu
+    function closeMobileMenu() {
         if (!navbar) return;
-        navbar.querySelectorAll(".dropdown").forEach(d => {
-            d.classList.remove("open");
-            const dm = d.querySelector(".dropdown-menu");
-            if (dm) {
-                dm.style.display = "";
-                dm.style.opacity = "";
-                dm.style.visibility = "";
-                dm.style.position = "";
-                dm.style.transform = "";
-                dm.style.boxShadow = "";
-                dm.style.paddingLeft = "";
-            }
+        navbar.classList.remove("active");
+        navbar.querySelectorAll(".dropdown-menu").forEach(dm => {
+            dm.style.display = "";
+            dm.style.opacity = "";
+            dm.style.visibility = "";
+            dm.style.position = "";
+            dm.style.transform = "";
+            dm.style.boxShadow = "";
         });
     }
 
     if (menuBtn && navbar) {
-        // Toggle buka/tutup menu garis tiga di HP
+        // Buka/tutup menu garis tiga
         menuBtn.addEventListener("click", () => {
             navbar.classList.toggle("active");
-            if (!navbar.classList.contains("active")) {
-                resetMobileDropdowns();
+            if (navbar.classList.contains("active") && window.innerWidth <= 992) {
+                // Tampilkan langsung semua sub-menu di HP agar langsung terlihat & bisa diklik
+                navbar.querySelectorAll(".dropdown-menu").forEach(dm => {
+                    dm.style.display = "block";
+                    dm.style.opacity = "1";
+                    dm.style.visibility = "visible";
+                    dm.style.position = "static";
+                    dm.style.transform = "none";
+                    dm.style.boxShadow = "none";
+                    dm.style.paddingLeft = "20px";
+                });
+            } else {
+                closeMobileMenu();
             }
         });
 
-        // Atur klik pada menu utama & sub-menu dropdown di HP
+        // Saat semua link (Profil, Akademik, Visi & Misi, Prestasi, dll) diklik:
+        // Biarkan browser melompat ke section tujuannya, lalu tutup menu otomatis
         navbar.querySelectorAll("a").forEach(link => {
-            link.addEventListener("click", (e) => {
-                const parentLi = link.parentElement;
-
-                if (parentLi.classList.contains("dropdown")) {
-                    // Khusus di layar HP/Tablet: ketuk Profil / Akademik untuk membuka/menutup sub-menu
-                    if (window.innerWidth <= 992) {
-                        e.preventDefault();
-                        const dropdownMenu = parentLi.querySelector(".dropdown-menu");
-                        const isOpen = parentLi.classList.contains("open");
-
-                        resetMobileDropdowns();
-
-                        // Buka dropdown yang diketuk dengan memaksa opacity, visibility & posisi tampil
-                        if (!isOpen && dropdownMenu) {
-                            parentLi.classList.add("open");
-                            dropdownMenu.style.display = "block";
-                            dropdownMenu.style.opacity = "1";
-                            dropdownMenu.style.visibility = "visible";
-                            dropdownMenu.style.position = "static";
-                            dropdownMenu.style.transform = "none";
-                            dropdownMenu.style.boxShadow = "none";
-                            dropdownMenu.style.paddingLeft = "16px";
-                        }
-                    }
-                } else {
-                    // Jika item menu biasa atau item sub-menu diklik, tutup menu mobile & reset dropdown
-                    navbar.classList.remove("active");
-                    resetMobileDropdowns();
+            link.addEventListener("click", () => {
+                if (window.innerWidth <= 992) {
+                    setTimeout(() => {
+                        closeMobileMenu();
+                    }, 150);
                 }
             });
         });
