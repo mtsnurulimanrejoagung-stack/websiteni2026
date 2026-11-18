@@ -15,12 +15,22 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 document.addEventListener("DOMContentLoaded", () => {
-    // Mobile Menu Toggle
+    // Mobile Menu Toggle & Auto-Close saat link diklik
     const menuBtn = document.getElementById("menuBtn");
     const navbar = document.getElementById("navbar");
     if (menuBtn && navbar) {
         menuBtn.addEventListener("click", () => {
             navbar.classList.toggle("active");
+        });
+
+        // Tutup menu otomatis saat item menu diklik (kecuali tombol induk dropdown)
+        navbar.querySelectorAll("a").forEach(link => {
+            link.addEventListener("click", () => {
+                const parentLi = link.parentElement;
+                if (!parentLi.classList.contains("dropdown")) {
+                    navbar.classList.remove("active");
+                }
+            });
         });
     }
 
