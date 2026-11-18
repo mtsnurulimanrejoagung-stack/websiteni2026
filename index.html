@@ -44,7 +44,6 @@
                 <ul class="main-menu">
                     <li><a href="#beranda" class="active">Beranda</a></li>
                     
-                    <!-- Menu Profil dengan Dropdown Vertikal Tanpa Garis Bawah -->
                     <li class="dropdown">
                         <a href="#profil">Profil <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
                         <ul class="dropdown-menu">
@@ -53,7 +52,6 @@
                         </ul>
                     </li>
 
-                    <!-- Menu Akademik (Berisi Program, Ekstrakurikuler, Sarana) -->
                     <li class="dropdown">
                         <a href="#akademik">Akademik <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
                         <ul class="dropdown-menu">
@@ -314,7 +312,7 @@
                 <button class="tab-btn" data-tab="gallery-tab">Galeri Kegiatan</button>
             </div>
 
-            <!-- NEWS CONTAINER -->
+            <!-- NEWS CONTAINER (MAKSIMAL 3 TERBARU + LIHAT BERITA LAINNYA DI TAB BARU) -->
             <div id="news-tab" class="tab-content active">
                 <div class="grid-3" id="news-container">
                     <div class="empty-state">
@@ -322,15 +320,25 @@
                         <p>Belum ada berita yang dipublikasikan.</p>
                     </div>
                 </div>
+                <div id="news-more-wrapper" style="text-align: center; margin-top: 30px; display: none;">
+                    <a href="berita.html" target="_blank" class="btn-primary">
+                        Lihat Berita Lainnya <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
             </div>
 
-            <!-- GALLERY CONTAINER -->
+            <!-- GALLERY CONTAINER (MAKSIMAL 4 TERBARU + LIHAT GALERI LAINNYA DI TAB BARU) -->
             <div id="gallery-tab" class="tab-content">
                 <div class="grid-4" id="gallery-container">
                     <div class="empty-state">
                         <i class="fas fa-images"></i>
                         <p>Belum ada foto galeri yang diunggah.</p>
                     </div>
+                </div>
+                <div id="gallery-more-wrapper" style="text-align: center; margin-top: 30px; display: none;">
+                    <a href="galeri.html" target="_blank" class="btn-primary">
+                        Lihat Galeri Lainnya <i class="fas fa-arrow-right"></i>
+                    </a>
                 </div>
             </div>
         </div>
