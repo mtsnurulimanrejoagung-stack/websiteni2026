@@ -302,6 +302,11 @@
             box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
         }
 
+        .form-actions-row {
+            display: flex;
+            gap: 10px;
+        }
+
         .btn-submit {
             background-color: var(--blue);
             color: var(--white);
@@ -322,6 +327,24 @@
         .btn-submit:disabled {
             background-color: #94A3B8;
             cursor: not-allowed;
+        }
+
+        .btn-cancel {
+            background-color: #64748B;
+            color: var(--white);
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: none;
+            white-space: nowrap;
+        }
+
+        .btn-cancel:hover {
+            background-color: #475569;
         }
 
         /* TABEL DATA */
@@ -352,6 +375,12 @@
             background-color: var(--gray-light);
         }
 
+        .action-group {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
         .btn-action {
             padding: 6px 12px;
             border-radius: 6px;
@@ -360,6 +389,18 @@
             font-weight: 600;
             cursor: pointer;
             transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .btn-edit {
+            background-color: var(--gold);
+            color: var(--white);
+        }
+
+        .btn-edit:hover {
+            opacity: 0.85;
         }
 
         .btn-danger {
@@ -368,7 +409,7 @@
         }
 
         .btn-danger:hover {
-            opacity: 0.8;
+            opacity: 0.85;
         }
 
         /* RESPONSIF UNTUK HP & TABLET */
@@ -496,15 +537,16 @@
                     </div>
                     <div class="card-form">
                         <h3>Selamat Datang di Panel Admin</h3>
-                        <p style="font-size: 14px; color: #64748B;">Gunakan menu navigasi di samping untuk mengelola berita, pengumuman, galeri foto, dan prestasi madrasah secara online (real-time di semua perangkat).</p>
+                        <p style="font-size: 14px; color: #64748B;">Gunakan menu navigasi di samping untuk mengelola, mengedit, atau menghapus berita, pengumuman, galeri foto, dan prestasi madrasah secara real-time di semua perangkat.</p>
                     </div>
                 </div>
 
-                <!-- POSTING BERITA -->
+                <!-- POSTING / EDIT BERITA -->
                 <div id="news-section" class="admin-section">
                     <div class="card-form">
-                        <h3>Formulir Berita / Pengumuman Baru</h3>
+                        <h3 id="news-form-heading">Formulir Berita / Pengumuman Baru</h3>
                         <form id="newsForm">
+                            <input type="hidden" id="editNewsId" value="">
                             <div class="form-group">
                                 <label>Judul Berita</label>
                                 <input type="text" id="newsTitle" placeholder="Contoh: Kegiatan Pesantren Kilat 2026" required>
@@ -518,8 +560,9 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label>Pilih Gambar Berita</label>
+                                <label id="newsImageLabel">Pilih Gambar Berita</label>
                                 <input type="file" id="newsImageFile" accept="image/*" required>
+                                <small id="newsImageHint" style="display:none; color:#64748B; font-size:12px; margin-top:4px;">Kosongkan jika tidak ingin mengganti foto yang sudah ada.</small>
                             </div>
                             <div class="form-group">
                                 <label>Isi Berita</label>
@@ -532,38 +575,47 @@
                                     <option value="draft">Simpan sebagai Draft</option>
                                 </select>
                             </div>
-                            <button type="submit" id="btnSubmitNews" class="btn-submit"><i class="fas fa-paper-plane"></i> Publikasikan Berita</button>
+                            <div class="form-actions-row">
+                                <button type="submit" id="btnSubmitNews" class="btn-submit"><i class="fas fa-paper-plane"></i> Publikasikan Berita</button>
+                                <button type="button" id="btnCancelNews" class="btn-cancel" onclick="cancelEditNews()">Batal Edit</button>
+                            </div>
                         </form>
                     </div>
                 </div>
 
-                <!-- UPLOAD GALERI -->
+                <!-- UPLOAD / EDIT GALERI -->
                 <div id="gallery-section" class="admin-section">
                     <div class="card-form">
-                        <h3>Formulir Upload Foto Galeri</h3>
+                        <h3 id="gallery-form-heading">Formulir Upload Foto Galeri</h3>
                         <form id="galleryForm">
+                            <input type="hidden" id="editGalleryId" value="">
                             <div class="form-group">
                                 <label>Judul Foto / Kegiatan</label>
                                 <input type="text" id="galleryTitle" placeholder="Contoh: Juara Lomba Pramuka" required>
                             </div>
                             <div class="form-group">
-                                <label>Pilih File Foto</label>
+                                <label id="galleryImageLabel">Pilih File Foto</label>
                                 <input type="file" id="galleryImageFile" accept="image/*" required>
+                                <small id="galleryImageHint" style="display:none; color:#64748B; font-size:12px; margin-top:4px;">Kosongkan jika tidak ingin mengganti foto yang sudah ada.</small>
                             </div>
                             <div class="form-group">
                                 <label>Keterangan Singkat</label>
                                 <textarea id="galleryDesc" rows="3" placeholder="Keterangan singkat..." required></textarea>
                             </div>
-                            <button type="submit" id="btnSubmitGallery" class="btn-submit"><i class="fas fa-upload"></i> Upload ke Galeri</button>
+                            <div class="form-actions-row">
+                                <button type="submit" id="btnSubmitGallery" class="btn-submit"><i class="fas fa-upload"></i> Upload ke Galeri</button>
+                                <button type="button" id="btnCancelGallery" class="btn-cancel" onclick="cancelEditGallery()">Batal Edit</button>
+                            </div>
                         </form>
                     </div>
                 </div>
 
-                <!-- INPUT PRESTASI -->
+                <!-- INPUT / EDIT PRESTASI -->
                 <div id="prestasi-section" class="admin-section">
                     <div class="card-form">
-                        <h3>Formulir Prestasi Madrasah</h3>
+                        <h3 id="prestasi-form-heading">Formulir Prestasi Madrasah</h3>
                         <form id="prestasiForm">
+                            <input type="hidden" id="editPrestasiId" value="">
                             <div class="form-group">
                                 <label>Nama Kejuaraan / Lomba</label>
                                 <input type="text" id="prestasiTitle" placeholder="Contoh: Juara 1 Kompetisi Sains Madrasah (KSM)" required>
@@ -576,7 +628,10 @@
                                 <label>Keterangan / Nama Siswa</label>
                                 <textarea id="prestasiDesc" rows="3" placeholder="Contoh: Bidang Matematika Terintegrasi - Ananda Ahmad Fauzi" required></textarea>
                             </div>
-                            <button type="submit" id="btnSubmitPrestasi" class="btn-submit"><i class="fas fa-paper-plane"></i> Simpan Prestasi</button>
+                            <div class="form-actions-row">
+                                <button type="submit" id="btnSubmitPrestasi" class="btn-submit"><i class="fas fa-paper-plane"></i> Simpan Prestasi</button>
+                                <button type="button" id="btnCancelPrestasi" class="btn-cancel" onclick="cancelEditPrestasi()">Batal Edit</button>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -648,7 +703,7 @@
     <!-- JAVASCRIPT AUTH & FIREBASE FIRESTORE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, getDocs, getDoc, updateDoc, deleteDoc, doc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDCokgJrrjQk7YTTw2iu4-p5S6SvbCCV0g",
@@ -695,6 +750,26 @@
             });
         }
 
+        function switchSection(targetId, customTitle = null) {
+            const navLinks = document.querySelectorAll(".sidebar-menu .nav-link");
+            const sections = document.querySelectorAll(".admin-section");
+            const pageTitle = document.getElementById("page-title");
+
+            navLinks.forEach(l => l.classList.remove("active"));
+            sections.forEach(s => s.classList.remove("active"));
+
+            const activeLink = document.querySelector(`.sidebar-menu .nav-link[data-target="${targetId}"]`);
+            if (activeLink) activeLink.classList.add("active");
+
+            document.getElementById(targetId).classList.add("active");
+            pageTitle.innerText = customTitle || (activeLink ? activeLink.textContent.trim() : "Dashboard Pengelolaan");
+
+            if (targetId === "list-news-section") renderAdminNews();
+            if (targetId === "list-gallery-section") renderAdminGallery();
+            if (targetId === "list-prestasi-section") renderAdminPrestasi();
+            if (targetId === "dashboard-section") updateStats();
+        }
+
         document.addEventListener("DOMContentLoaded", () => {
             const isLogged = sessionStorage.getItem("isAdminLoggedIn");
             if (isLogged === "true") {
@@ -721,31 +796,24 @@
             });
 
             const navLinks = document.querySelectorAll(".sidebar-menu .nav-link");
-            const sections = document.querySelectorAll(".admin-section");
-            const pageTitle = document.getElementById("page-title");
-
             navLinks.forEach(link => {
                 link.addEventListener("click", (e) => {
                     e.preventDefault();
-                    navLinks.forEach(l => l.classList.remove("active"));
-                    sections.forEach(s => s.classList.remove("active"));
-
-                    link.classList.add("active");
                     const targetId = link.getAttribute("data-target");
-                    document.getElementById(targetId).classList.add("active");
-                    pageTitle.innerText = link.textContent.trim();
-
-                    if (targetId === "list-news-section") renderAdminNews();
-                    if (targetId === "list-gallery-section") renderAdminGallery();
-                    if (targetId === "list-prestasi-section") renderAdminPrestasi();
-                    if (targetId === "dashboard-section") updateStats();
+                    // Reset form edit jika berpindah menu manual
+                    if (targetId === "news-section" && document.getElementById("editNewsId").value) cancelEditNews(false);
+                    if (targetId === "gallery-section" && document.getElementById("editGalleryId").value) cancelEditGallery(false);
+                    if (targetId === "prestasi-section" && document.getElementById("editPrestasiId").value) cancelEditPrestasi(false);
+                    switchSection(targetId);
                 });
             });
 
+            // SUBMIT BERITA (TAMBAH & EDIT)
             const newsForm = document.getElementById("newsForm");
             newsForm.addEventListener("submit", async (e) => {
                 e.preventDefault();
                 const btn = document.getElementById("btnSubmitNews");
+                const editId = document.getElementById("editNewsId").value;
                 btn.disabled = true;
                 btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Menyimpan...`;
 
@@ -756,73 +824,97 @@
                     const status = document.getElementById("newsStatus").value;
                     const fileInput = document.getElementById("newsImageFile");
 
-                    let imageBase64 = "";
-                    if (fileInput.files.length > 0) {
-                        imageBase64 = await compressImageToBase64(fileInput.files[0]);
+                    if (editId) {
+                        const updateData = { title, category, content, status };
+                        if (fileInput.files.length > 0) {
+                            updateData.image = await compressImageToBase64(fileInput.files[0]);
+                        }
+                        await updateDoc(doc(db, "news", editId), updateData);
+                        alert("Perubahan berita berhasil disimpan!");
+                        cancelEditNews(true);
+                    } else {
+                        let imageBase64 = "";
+                        if (fileInput.files.length > 0) {
+                            imageBase64 = await compressImageToBase64(fileInput.files[0]);
+                        }
+                        await addDoc(collection(db, "news"), {
+                            title,
+                            category,
+                            content,
+                            status,
+                            date: new Date().toLocaleDateString("id-ID", { day: 'numeric', month: 'long', year: 'numeric' }),
+                            image: imageBase64,
+                            createdAt: Date.now()
+                        });
+                        alert("Berita berhasil dipublikasikan ke seluruh perangkat!");
+                        newsForm.reset();
                     }
-
-                    await addDoc(collection(db, "news"), {
-                        title,
-                        category,
-                        content,
-                        status,
-                        date: new Date().toLocaleDateString("id-ID", { day: 'numeric', month: 'long', year: 'numeric' }),
-                        image: imageBase64,
-                        createdAt: Date.now()
-                    });
-
-                    alert("Berita berhasil dipublikasikan ke seluruh perangkat!");
-                    newsForm.reset();
                     updateStats();
                 } catch (err) {
                     console.error(err);
                     alert("Gagal menyimpan berita: " + err.message);
                 } finally {
                     btn.disabled = false;
-                    btn.innerHTML = `<i class="fas fa-paper-plane"></i> Publikasikan Berita`;
+                    if (!document.getElementById("editNewsId").value) {
+                        btn.innerHTML = `<i class="fas fa-paper-plane"></i> Publikasikan Berita`;
+                    }
                 }
             });
 
+            // SUBMIT GALERI (TAMBAH & EDIT)
             const galleryForm = document.getElementById("galleryForm");
             galleryForm.addEventListener("submit", async (e) => {
                 e.preventDefault();
                 const btn = document.getElementById("btnSubmitGallery");
+                const editId = document.getElementById("editGalleryId").value;
                 btn.disabled = true;
-                btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Mengunggah...`;
+                btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Menyimpan...`;
 
                 try {
                     const title = document.getElementById("galleryTitle").value;
                     const description = document.getElementById("galleryDesc").value;
                     const fileInput = document.getElementById("galleryImageFile");
 
-                    let imageBase64 = "";
-                    if (fileInput.files.length > 0) {
-                        imageBase64 = await compressImageToBase64(fileInput.files[0]);
+                    if (editId) {
+                        const updateData = { title, description };
+                        if (fileInput.files.length > 0) {
+                            updateData.image = await compressImageToBase64(fileInput.files[0]);
+                        }
+                        await updateDoc(doc(db, "gallery", editId), updateData);
+                        alert("Perubahan galeri berhasil disimpan!");
+                        cancelEditGallery(true);
+                    } else {
+                        let imageBase64 = "";
+                        if (fileInput.files.length > 0) {
+                            imageBase64 = await compressImageToBase64(fileInput.files[0]);
+                        }
+                        await addDoc(collection(db, "gallery"), {
+                            title,
+                            description,
+                            image: imageBase64,
+                            createdAt: Date.now()
+                        });
+                        alert("Foto galeri berhasil diunggah ke seluruh perangkat!");
+                        galleryForm.reset();
                     }
-
-                    await addDoc(collection(db, "gallery"), {
-                        title,
-                        description,
-                        image: imageBase64,
-                        createdAt: Date.now()
-                    });
-
-                    alert("Foto galeri berhasil diunggah ke seluruh perangkat!");
-                    galleryForm.reset();
                     updateStats();
                 } catch (err) {
                     console.error(err);
-                    alert("Gagal mengunggah foto: " + err.message);
+                    alert("Gagal menyimpan galeri: " + err.message);
                 } finally {
                     btn.disabled = false;
-                    btn.innerHTML = `<i class="fas fa-upload"></i> Upload ke Galeri`;
+                    if (!document.getElementById("editGalleryId").value) {
+                        btn.innerHTML = `<i class="fas fa-upload"></i> Upload ke Galeri`;
+                    }
                 }
             });
 
+            // SUBMIT PRESTASI (TAMBAH & EDIT)
             const prestasiForm = document.getElementById("prestasiForm");
             prestasiForm.addEventListener("submit", async (e) => {
                 e.preventDefault();
                 const btn = document.getElementById("btnSubmitPrestasi");
+                const editId = document.getElementById("editPrestasiId").value;
                 btn.disabled = true;
                 btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Menyimpan...`;
 
@@ -831,22 +923,33 @@
                     const level = document.getElementById("prestasiLevel").value;
                     const description = document.getElementById("prestasiDesc").value;
 
-                    await addDoc(collection(db, "prestasi"), {
-                        title,
-                        level,
-                        description,
-                        createdAt: Date.now()
-                    });
-
-                    alert("Data prestasi berhasil disimpan ke seluruh perangkat!");
-                    prestasiForm.reset();
+                    if (editId) {
+                        await updateDoc(doc(db, "prestasi", editId), {
+                            title,
+                            level,
+                            description
+                        });
+                        alert("Perubahan data prestasi berhasil disimpan!");
+                        cancelEditPrestasi(true);
+                    } else {
+                        await addDoc(collection(db, "prestasi"), {
+                            title,
+                            level,
+                            description,
+                            createdAt: Date.now()
+                        });
+                        alert("Data prestasi berhasil disimpan ke seluruh perangkat!");
+                        prestasiForm.reset();
+                    }
                     updateStats();
                 } catch (err) {
                     console.error(err);
                     alert("Gagal menyimpan prestasi: " + err.message);
                 } finally {
                     btn.disabled = false;
-                    btn.innerHTML = `<i class="fas fa-paper-plane"></i> Simpan Prestasi`;
+                    if (!document.getElementById("editPrestasiId").value) {
+                        btn.innerHTML = `<i class="fas fa-paper-plane"></i> Simpan Prestasi`;
+                    }
                 }
             });
         });
@@ -870,6 +973,7 @@
             }
         }
 
+        // ==================== BERITA CRUD ====================
         async function renderAdminNews() {
             const tbody = document.getElementById("admin-news-list");
             tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#94A3B8;">Memuat data...</td></tr>`;
@@ -891,7 +995,12 @@
                         <td><strong>${item.title}</strong></td>
                         <td>${item.category}</td>
                         <td><span style="padding: 4px 8px; border-radius: 4px; font-size: 11px; background: ${item.status === 'published' ? '#10B98120' : '#F59E0B20'}; color: ${item.status === 'published' ? '#10B981' : '#F59E0B'}">${item.status.toUpperCase()}</span></td>
-                        <td><button class="btn-action btn-danger" onclick="deleteNews('${docSnap.id}')"><i class="fas fa-trash"></i> Hapus</button></td>
+                        <td>
+                            <div class="action-group">
+                                <button class="btn-action btn-edit" onclick="editNews('${docSnap.id}')"><i class="fas fa-edit"></i> Edit</button>
+                                <button class="btn-action btn-danger" onclick="deleteNews('${docSnap.id}')"><i class="fas fa-trash"></i> Hapus</button>
+                            </div>
+                        </td>
                     `;
                     tbody.appendChild(tr);
                 });
@@ -899,6 +1008,49 @@
                 tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:red;">Gagal memuat berita.</td></tr>`;
             }
         }
+
+        window.editNews = async function(docId) {
+            try {
+                const snap = await getDoc(doc(db, "news", docId));
+                if (!snap.exists()) return;
+                const data = snap.data();
+
+                document.getElementById("editNewsId").value = docId;
+                document.getElementById("newsTitle").value = data.title || "";
+                document.getElementById("newsCategory").value = data.category || "Berita Resmi";
+                document.getElementById("newsContent").value = data.content || "";
+                document.getElementById("newsStatus").value = data.status || "published";
+
+                const fileInput = document.getElementById("newsImageFile");
+                fileInput.required = false;
+                fileInput.value = "";
+                document.getElementById("newsImageLabel").innerText = "Ganti Gambar Berita (Opsional)";
+                document.getElementById("newsImageHint").style.display = "block";
+
+                document.getElementById("news-form-heading").innerText = "Edit Berita / Pengumuman";
+                document.getElementById("btnSubmitNews").innerHTML = `<i class="fas fa-save"></i> Simpan Perubahan`;
+                document.getElementById("btnCancelNews").style.display = "inline-block";
+
+                switchSection("news-section", "Edit Berita");
+            } catch (e) {
+                alert("Gagal membuka data berita: " + e.message);
+            }
+        };
+
+        window.cancelEditNews = function(returnToList = true) {
+            document.getElementById("newsForm").reset();
+            document.getElementById("editNewsId").value = "";
+            const fileInput = document.getElementById("newsImageFile");
+            fileInput.required = true;
+            document.getElementById("newsImageLabel").innerText = "Pilih Gambar Berita";
+            document.getElementById("newsImageHint").style.display = "none";
+
+            document.getElementById("news-form-heading").innerText = "Formulir Berita / Pengumuman Baru";
+            document.getElementById("btnSubmitNews").innerHTML = `<i class="fas fa-paper-plane"></i> Publikasikan Berita`;
+            document.getElementById("btnCancelNews").style.display = "none";
+
+            if (returnToList) switchSection("list-news-section");
+        };
 
         window.deleteNews = async function(docId) {
             if (confirm("Yakin ingin menghapus berita ini?")) {
@@ -912,6 +1064,7 @@
             }
         };
 
+        // ==================== GALERI CRUD ====================
         async function renderAdminGallery() {
             const tbody = document.getElementById("admin-gallery-list");
             tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:#94A3B8;">Memuat data...</td></tr>`;
@@ -931,7 +1084,12 @@
                     tr.innerHTML = `
                         <td><strong>${item.title}</strong></td>
                         <td>${item.description}</td>
-                        <td><button class="btn-action btn-danger" onclick="deleteGallery('${docSnap.id}')"><i class="fas fa-trash"></i> Hapus</button></td>
+                        <td>
+                            <div class="action-group">
+                                <button class="btn-action btn-edit" onclick="editGallery('${docSnap.id}')"><i class="fas fa-edit"></i> Edit</button>
+                                <button class="btn-action btn-danger" onclick="deleteGallery('${docSnap.id}')"><i class="fas fa-trash"></i> Hapus</button>
+                            </div>
+                        </td>
                     `;
                     tbody.appendChild(tr);
                 });
@@ -939,6 +1097,47 @@
                 tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:red;">Gagal memuat galeri.</td></tr>`;
             }
         }
+
+        window.editGallery = async function(docId) {
+            try {
+                const snap = await getDoc(doc(db, "gallery", docId));
+                if (!snap.exists()) return;
+                const data = snap.data();
+
+                document.getElementById("editGalleryId").value = docId;
+                document.getElementById("galleryTitle").value = data.title || "";
+                document.getElementById("galleryDesc").value = data.description || "";
+
+                const fileInput = document.getElementById("galleryImageFile");
+                fileInput.required = false;
+                fileInput.value = "";
+                document.getElementById("galleryImageLabel").innerText = "Ganti File Foto (Opsional)";
+                document.getElementById("galleryImageHint").style.display = "block";
+
+                document.getElementById("gallery-form-heading").innerText = "Edit Foto Galeri";
+                document.getElementById("btnSubmitGallery").innerHTML = `<i class="fas fa-save"></i> Simpan Perubahan`;
+                document.getElementById("btnCancelGallery").style.display = "inline-block";
+
+                switchSection("gallery-section", "Edit Galeri");
+            } catch (e) {
+                alert("Gagal membuka data galeri: " + e.message);
+            }
+        };
+
+        window.cancelEditGallery = function(returnToList = true) {
+            document.getElementById("galleryForm").reset();
+            document.getElementById("editGalleryId").value = "";
+            const fileInput = document.getElementById("galleryImageFile");
+            fileInput.required = true;
+            document.getElementById("galleryImageLabel").innerText = "Pilih File Foto";
+            document.getElementById("galleryImageHint").style.display = "none";
+
+            document.getElementById("gallery-form-heading").innerText = "Formulir Upload Foto Galeri";
+            document.getElementById("btnSubmitGallery").innerHTML = `<i class="fas fa-upload"></i> Upload ke Galeri`;
+            document.getElementById("btnCancelGallery").style.display = "none";
+
+            if (returnToList) switchSection("list-gallery-section");
+        };
 
         window.deleteGallery = async function(docId) {
             if (confirm("Yakin ingin menghapus foto ini?")) {
@@ -952,6 +1151,7 @@
             }
         };
 
+        // ==================== PRESTASI CRUD ====================
         async function renderAdminPrestasi() {
             const tbody = document.getElementById("admin-prestasi-list");
             tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#94A3B8;">Memuat data...</td></tr>`;
@@ -972,7 +1172,12 @@
                         <td><strong>${item.title}</strong></td>
                         <td>${item.level}</td>
                         <td>${item.description}</td>
-                        <td><button class="btn-action btn-danger" onclick="deletePrestasi('${docSnap.id}')"><i class="fas fa-trash"></i> Hapus</button></td>
+                        <td>
+                            <div class="action-group">
+                                <button class="btn-action btn-edit" onclick="editPrestasi('${docSnap.id}')"><i class="fas fa-edit"></i> Edit</button>
+                                <button class="btn-action btn-danger" onclick="deletePrestasi('${docSnap.id}')"><i class="fas fa-trash"></i> Hapus</button>
+                            </div>
+                        </td>
                     `;
                     tbody.appendChild(tr);
                 });
@@ -980,6 +1185,38 @@
                 tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:red;">Gagal memuat data prestasi.</td></tr>`;
             }
         }
+
+        window.editPrestasi = async function(docId) {
+            try {
+                const snap = await getDoc(doc(db, "prestasi", docId));
+                if (!snap.exists()) return;
+                const data = snap.data();
+
+                document.getElementById("editPrestasiId").value = docId;
+                document.getElementById("prestasiTitle").value = data.title || "";
+                document.getElementById("prestasiLevel").value = data.level || "";
+                document.getElementById("prestasiDesc").value = data.description || "";
+
+                document.getElementById("prestasi-form-heading").innerText = "Edit Prestasi Madrasah";
+                document.getElementById("btnSubmitPrestasi").innerHTML = `<i class="fas fa-save"></i> Simpan Perubahan`;
+                document.getElementById("btnCancelPrestasi").style.display = "inline-block";
+
+                switchSection("prestasi-section", "Edit Prestasi");
+            } catch (e) {
+                alert("Gagal membuka data prestasi: " + e.message);
+            }
+        };
+
+        window.cancelEditPrestasi = function(returnToList = true) {
+            document.getElementById("prestasiForm").reset();
+            document.getElementById("editPrestasiId").value = "";
+
+            document.getElementById("prestasi-form-heading").innerText = "Formulir Prestasi Madrasah";
+            document.getElementById("btnSubmitPrestasi").innerHTML = `<i class="fas fa-paper-plane"></i> Simpan Prestasi`;
+            document.getElementById("btnCancelPrestasi").style.display = "none";
+
+            if (returnToList) switchSection("list-prestasi-section");
+        };
 
         window.deletePrestasi = async function(docId) {
             if (confirm("Yakin ingin menghapus data prestasi ini?")) {
