@@ -21,6 +21,19 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
         body { background-color: var(--gray-light); color: var(--gray-dark); min-height: 100vh; padding: 30px; }
         .container { max-width: 800px; margin: 0 auto; }
+        
+        /* KOTAK LOGIN */
+        #login-section {
+            background: var(--white);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            max-width: 400px;
+            margin: 80px auto;
+            text-align: center;
+        }
+        #login-section h2 { color: var(--navy); font-size: 22px; margin-bottom: 20px; }
+
         .card-form { background: var(--white); padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 30px; }
         .card-form h2 { font-size: 20px; color: var(--navy); margin-bottom: 20px; border-bottom: 2px solid var(--gray-light); padding-bottom: 10px; }
         .form-group { margin-bottom: 18px; text-align: left; }
@@ -35,10 +48,32 @@
     </style>
 </head>
 <body>
-    <div class="container">
+
+    <!-- HALAMAN LOGIN ADMIN E-PERPUS -->
+    <div id="login-section">
+        <h2><i class="fas fa-lock"></i> Login Admin E-Perpus</h2>
+        <form id="loginForm">
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" id="adminUser" placeholder="Masukkan username..." required>
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="adminPassword" placeholder="Masukkan password..." required>
+            </div>
+            <button type="submit" class="btn-submit">Masuk Dashboard</button>
+        </form>
+        <p style="margin-top: 15px; font-size: 12px;"><a href="e-perpus.html" style="color: var(--blue); text-decoration: none;"><i class="fas fa-arrow-left"></i> Kembali ke E-Perpus Publik</a></p>
+    </div>
+
+    <!-- DASHBOARD ADMIN (DISEMBUNYIKAN SAMPAI LOGIN BERHASIL) -->
+    <div class="container" id="admin-dashboard" style="display: none;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
             <h1 style="font-size: 22px; color: var(--navy);"><i class="fas fa-book"></i> Panel Admin E-Perpus</h1>
-            <a href="e-perpus.html" target="_blank" style="font-size: 13px; color: var(--blue); text-decoration: none;"><i class="fas fa-external-link-alt"></i> Lihat Halaman E-Perpus</a>
+            <div>
+                <a href="e-perpus.html" target="_blank" style="font-size: 13px; color: var(--blue); text-decoration: none; margin-right: 15px;"><i class="fas fa-external-link-alt"></i> Lihat E-Perpus</a>
+                <button id="btnLogout" style="background: var(--danger); color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px;"><i class="fas fa-sign-out-alt"></i> Logout</button>
+            </div>
         </div>
 
         <!-- FORM TAMBAH BUKU -->
@@ -95,7 +130,7 @@
         </div>
     </div>
 
-    <!-- SCRIPT ADMIN E-PERPUS -->
+    <!-- SCRIPT ADMIN & LOGIN E-PERPUS -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -112,6 +147,40 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+
+        // Kredensial Login Admin
+        const CORRECT_USER = "admin";
+        const CORRECT_PASS = "nuruliman2026";
+
+        const loginSection = document.getElementById("login-section");
+        const adminDashboard = document.getElementById("admin-dashboard");
+
+        // Cek apakah sudah login sebelumnya di sesi ini
+        if (sessionStorage.getItem("perpusLoggedIn") === "true") {
+            loginSection.style.display = "none";
+            adminDashboard.style.display = "block";
+            renderAdminBooks();
+        }
+
+        document.getElementById("loginForm").addEventListener("submit", (e) => {
+            e.preventDefault();
+            const user = document.getElementById("adminUser").value.trim();
+            const pass = document.getElementById("adminPassword").value.trim();
+
+            if (user === CORRECT_USER && pass === CORRECT_PASS) {
+                sessionStorage.setItem("perpusLoggedIn", "true");
+                loginSection.style.display = "none";
+                adminDashboard.style.display = "block";
+                renderAdminBooks();
+            } else {
+                alert("Username atau Password salah! Silakan coba lagi.");
+            }
+        });
+
+        document.getElementById("btnLogout").addEventListener("click", () => {
+            sessionStorage.removeItem("perpusLoggedIn");
+            window.location.reload();
+        });
 
         function compressImageToBase64(file, maxWidth = 600, quality = 0.7) {
             return new Promise((resolve, reject) => {
@@ -221,8 +290,6 @@
                 }
             }
         };
-
-        renderAdminBooks();
     </script>
 </body>
 </html>
