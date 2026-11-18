@@ -412,6 +412,19 @@
             opacity: 0.85;
         }
 
+        .order-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            background: #EFF6FF;
+            color: var(--blue);
+            font-weight: 700;
+            border-radius: 6px;
+            border: 1px solid #BFDBFE;
+        }
+
         /* RESPONSIF UNTUK HP & TABLET */
         @media (max-width: 992px) {
             .admin-layout {
@@ -537,7 +550,7 @@
                     </div>
                     <div class="card-form">
                         <h3>Selamat Datang di Panel Admin</h3>
-                        <p style="font-size: 14px; color: #64748B;">Gunakan menu navigasi di samping untuk mengelola, mengedit, atau menghapus berita, pengumuman, galeri foto, dan prestasi madrasah secara real-time di semua perangkat.</p>
+                        <p style="font-size: 14px; color: #64748B;">Gunakan menu navigasi di samping untuk mengelola, mengedit, mengatur urutan prestasi (1, 2, 3, dst.), atau menghapus konten secara real-time di semua perangkat.</p>
                     </div>
                 </div>
 
@@ -617,8 +630,12 @@
                         <form id="prestasiForm">
                             <input type="hidden" id="editPrestasiId" value="">
                             <div class="form-group">
+                                <label>Nomor Urut Tampil (1 = Paling Pertama, 2 = Kedua, 3 = Ketiga, dst.)</label>
+                                <input type="number" id="prestasiOrder" min="1" placeholder="Contoh: 1 (Urutan 1–3 tampil di Beranda)" required>
+                            </div>
+                            <div class="form-group">
                                 <label>Nama Kejuaraan / Lomba</label>
-                                <input type="text" id="prestasiTitle" placeholder="Contoh: Juara 1 Kompetisi Sains Madrasah (KSM)" required>
+                                <input type="text" id="prestasiTitle" placeholder="Contoh: Juara 1 Olimpiade Sains Nasional (OSN)" required>
                             </div>
                             <div class="form-group">
                                 <label>Tingkat & Tahun</label>
@@ -679,11 +696,12 @@
                 <!-- DAFTAR PRESTASI -->
                 <div id="list-prestasi-section" class="admin-section">
                     <div class="card-form">
-                        <h3>Kelola Data Prestasi</h3>
+                        <h3>Kelola Data & Urutan Prestasi (Urutan 1–3 Tampil di Halaman Depan)</h3>
                         <div style="overflow-x: auto;">
                             <table class="data-table">
                                 <thead>
                                     <tr>
+                                        <th>Urutan</th>
                                         <th>Nama Kejuaraan</th>
                                         <th>Tingkat / Tahun</th>
                                         <th>Keterangan</th>
@@ -800,7 +818,6 @@
                 link.addEventListener("click", (e) => {
                     e.preventDefault();
                     const targetId = link.getAttribute("data-target");
-                    // Reset form edit jika berpindah menu manual
                     if (targetId === "news-section" && document.getElementById("editNewsId").value) cancelEditNews(false);
                     if (targetId === "gallery-section" && document.getElementById("editGalleryId").value) cancelEditGallery(false);
                     if (targetId === "prestasi-section" && document.getElementById("editPrestasiId").value) cancelEditPrestasi(false);
@@ -909,7 +926,7 @@
                 }
             });
 
-            // SUBMIT PRESTASI (TAMBAH & EDIT)
+            // SUBMIT PRESTASI (TAMBAH & EDIT + URUTAN)
             const prestasiForm = document.getElementById("prestasiForm");
             prestasiForm.addEventListener("submit", async (e) => {
                 e.preventDefault();
@@ -919,20 +936,23 @@
                 btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Menyimpan...`;
 
                 try {
+                    const order = Number(document.getElementById("prestasiOrder").value) || 999;
                     const title = document.getElementById("prestasiTitle").value;
                     const level = document.getElementById("prestasiLevel").value;
                     const description = document.getElementById("prestasiDesc").value;
 
                     if (editId) {
                         await updateDoc(doc(db, "prestasi", editId), {
+                            order,
                             title,
                             level,
                             description
                         });
-                        alert("Perubahan data prestasi berhasil disimpan!");
+                        alert("Perubahan urutan & data prestasi berhasil disimpan!");
                         cancelEditPrestasi(true);
                     } else {
                         await addDoc(collection(db, "prestasi"), {
+                            order,
                             title,
                             level,
                             description,
@@ -1151,38 +1171,48 @@
             }
         };
 
-        // ==================== PRESTASI CRUD ====================
+        // ==================== PRESTASI CRUD + URUTAN ====================
         async function renderAdminPrestasi() {
             const tbody = document.getElementById("admin-prestasi-list");
-            tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#94A3B8;">Memuat data...</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#94A3B8;">Memuat data...</td></tr>`;
             try {
-                const q = query(collection(db, "prestasi"), orderBy("createdAt", "desc"));
-                const snapshot = await getDocs(q);
+                const snapshot = await getDocs(collection(db, "prestasi"));
 
                 if (snapshot.empty) {
-                    tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#94A3B8;">Belum ada data prestasi.</td></tr>`;
+                    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#94A3B8;">Belum ada data prestasi.</td></tr>`;
                     return;
                 }
 
+                const items = [];
+                snapshot.forEach(docSnap => items.push({ id: docSnap.id, ...docSnap.data() }));
+
+                items.sort((a, b) => {
+                    const orderA = (a.order !== undefined && a.order !== null && a.order !== "") ? Number(a.order) : 9999;
+                    const orderB = (b.order !== undefined && b.order !== null && b.order !== "") ? Number(b.order) : 9999;
+                    if (orderA !== orderB) return orderA - orderB;
+                    return (b.createdAt || 0) - (a.createdAt || 0);
+                });
+
                 tbody.innerHTML = "";
-                snapshot.forEach((docSnap) => {
-                    const item = docSnap.data();
+                items.forEach((item) => {
+                    const displayOrder = (item.order !== undefined && item.order !== null && item.order !== "") ? item.order : "-";
                     const tr = document.createElement("tr");
                     tr.innerHTML = `
+                        <td><span class="order-badge">${displayOrder}</span></td>
                         <td><strong>${item.title}</strong></td>
                         <td>${item.level}</td>
                         <td>${item.description}</td>
                         <td>
                             <div class="action-group">
-                                <button class="btn-action btn-edit" onclick="editPrestasi('${docSnap.id}')"><i class="fas fa-edit"></i> Edit</button>
-                                <button class="btn-action btn-danger" onclick="deletePrestasi('${docSnap.id}')"><i class="fas fa-trash"></i> Hapus</button>
+                                <button class="btn-action btn-edit" onclick="editPrestasi('${item.id}')"><i class="fas fa-edit"></i> Edit</button>
+                                <button class="btn-action btn-danger" onclick="deletePrestasi('${item.id}')"><i class="fas fa-trash"></i> Hapus</button>
                             </div>
                         </td>
                     `;
                     tbody.appendChild(tr);
                 });
             } catch (e) {
-                tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:red;">Gagal memuat data prestasi.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:red;">Gagal memuat data prestasi.</td></tr>`;
             }
         }
 
@@ -1193,11 +1223,12 @@
                 const data = snap.data();
 
                 document.getElementById("editPrestasiId").value = docId;
+                document.getElementById("prestasiOrder").value = data.order || "";
                 document.getElementById("prestasiTitle").value = data.title || "";
                 document.getElementById("prestasiLevel").value = data.level || "";
                 document.getElementById("prestasiDesc").value = data.description || "";
 
-                document.getElementById("prestasi-form-heading").innerText = "Edit Prestasi Madrasah";
+                document.getElementById("prestasi-form-heading").innerText = "Edit Urutan & Data Prestasi";
                 document.getElementById("btnSubmitPrestasi").innerHTML = `<i class="fas fa-save"></i> Simpan Perubahan`;
                 document.getElementById("btnCancelPrestasi").style.display = "inline-block";
 
