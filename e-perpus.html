@@ -42,30 +42,30 @@
         /* HERO BANNER E-PERPUS ESTETIK */
         .perpus-hero {
             background: linear-gradient(135deg, rgba(10,25,47,0.92), rgba(30,58,138,0.9)), url('perpus-bg.jpg') center/cover;
-            padding: 60px 20px;
+            padding: 55px 20px;
             text-align: center;
             color: #FFFFFF;
         }
 
         .perpus-hero h1 {
-            font-size: 32px;
+            font-size: 30px;
             font-weight: 700;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             color: #FFFFFF;
         }
 
         .perpus-hero p {
-            font-size: 15px;
+            font-size: 14px;
             color: #E2E8F0;
             max-width: 600px;
-            margin: 0 auto 25px auto;
+            margin: 0 auto 20px auto;
             line-height: 1.6;
         }
 
         /* SEARCH & FILTER BAR ESTETIK */
         .search-container {
-            max-width: 550px;
-            margin: -25px auto 40px auto;
+            max-width: 520px;
+            margin: -25px auto 35px auto;
             padding: 0 15px;
             position: relative;
             z-index: 10;
@@ -82,10 +82,10 @@
 
         .search-box input {
             flex-grow: 1;
-            padding: 14px 22px;
+            padding: 12px 20px;
             border: none;
             outline: none;
-            font-size: 14px;
+            font-size: 13px;
             font-family: 'Poppins', sans-serif;
         }
 
@@ -93,7 +93,7 @@
             background: var(--blue);
             color: white;
             border: none;
-            padding: 0 25px;
+            padding: 0 22px;
             cursor: pointer;
             transition: 0.3s;
         }
@@ -105,24 +105,25 @@
         /* TAMPILAN RAK BUKU (BOOKSHELF STYLE) */
         .bookshelf-section {
             background: #F1F5F9;
-            padding: 40px 20px;
+            padding: 28px 20px;
             border-radius: 16px;
             box-shadow: inset 0 4px 15px rgba(0,0,0,0.03);
             margin-bottom: 60px;
             border: 1px solid #E2E8F0;
         }
 
+        /* KOTAK BUKU LEBIH KECIL & RAMPING */
         .books-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fill, minmax(165px, 1fr));
+            gap: 18px;
         }
 
         .book-card {
             background: #FFFFFF;
-            border-radius: 12px;
+            border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.06);
             transition: all 0.3s ease;
             display: flex;
             flex-direction: column;
@@ -131,8 +132,8 @@
         }
 
         .book-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 35px rgba(37,99,235,0.15);
+            transform: translateY(-6px);
+            box-shadow: 0 12px 28px rgba(37,99,235,0.15);
         }
 
         /* EFEK KAYU RAK BUKU DI BAWAH KARTU */
@@ -142,54 +143,60 @@
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 8px;
+            height: 6px;
             background: linear-gradient(90deg, #B45309, #D97706, #B45309);
             border-top: 1px solid #F59E0B;
         }
 
+        /* COVER FULL ASLI TANPA TERPOTONG */
         .book-cover-wrapper {
             position: relative;
             width: 100%;
-            height: 250px;
-            background: #0A192F;
+            aspect-ratio: 3 / 4;
+            background: #F8FAFC;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             overflow: hidden;
+            padding: 6px 6px 0 6px;
         }
 
         .book-cover-wrapper img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain;
+            border-radius: 4px;
             transition: 0.4s;
         }
 
         .book-card:hover .book-cover-wrapper img {
-            transform: scale(1.05);
+            transform: scale(1.03);
         }
 
         .book-info {
-            padding: 16px 16px 22px 16px;
+            padding: 10px 12px 16px 12px;
             display: flex;
             flex-direction: column;
             flex-grow: 1;
         }
 
         .book-category-tag {
-            font-size: 11px;
+            font-size: 9.5px;
             font-weight: 600;
             color: var(--blue);
             background: #EFF6FF;
-            padding: 3px 10px;
-            border-radius: 6px;
+            padding: 2px 7px;
+            border-radius: 4px;
             width: fit-content;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .book-title {
-            font-size: 16px;
+            font-size: 13px;
             font-weight: 600;
             color: var(--navy);
-            margin-bottom: 6px;
-            line-height: 1.4;
+            margin-bottom: 4px;
+            line-height: 1.35;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
@@ -197,9 +204,13 @@
         }
 
         .book-author {
-            font-size: 12px;
+            font-size: 10.5px;
             color: #64748B;
-            margin-bottom: 16px;
+            margin-bottom: 10px;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
 
         .book-actions {
@@ -210,9 +221,9 @@
             background-color: var(--blue);
             color: #FFFFFF;
             border: none;
-            padding: 10px 14px;
-            border-radius: 8px;
-            font-size: 13px;
+            padding: 7px 10px;
+            border-radius: 6px;
+            font-size: 11px;
             font-weight: 600;
             text-align: center;
             text-decoration: none;
@@ -220,7 +231,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
+            gap: 5px;
             width: 100%;
         }
 
@@ -236,17 +247,16 @@
             .logo-text h1 { font-size: 12px !important; white-space: nowrap; line-height: 1.1; }
             .logo-text p { font-size: 10px !important; }
             .nav-actions .btn-primary { padding: 6px 10px !important; font-size: 11px !important; }
-            .perpus-hero { padding: 40px 15px; }
-            .perpus-hero h1 { font-size: 22px; }
-            .perpus-hero p { font-size: 13px; }
-            .search-container { margin-top: -20px; margin-bottom: 30px; }
-            .bookshelf-section { padding: 20px 10px; }
-            .books-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-            .book-cover-wrapper { height: 170px; }
-            .book-info { padding: 10px 10px 16px 10px; }
+            .perpus-hero { padding: 35px 15px; }
+            .perpus-hero h1 { font-size: 20px; }
+            .perpus-hero p { font-size: 12.5px; }
+            .search-container { margin-top: -20px; margin-bottom: 25px; }
+            .bookshelf-section { padding: 16px 10px; }
+            .books-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .book-info { padding: 8px 10px 14px 10px; }
             .book-title { font-size: 12px; }
             .book-author { font-size: 10px; margin-bottom: 8px; }
-            .btn-read { padding: 6px; font-size: 11px; }
+            .btn-read { padding: 6px; font-size: 10.5px; }
         }
     </style>
 </head>
@@ -288,7 +298,7 @@
     <!-- TEKS BERJALAN (MARQUEE) -->
     <div class="marquee-container">
         <marquee behavior="scroll" direction="left" scrollamount="5">
-            <i class="fas fa-book-reader" style="margin-right: 8px;"></i> Selamat Datang di E-Perpus MTsS Nurul Iman Rejo Agung — Pusat Literasi Digital, Modul Pembelajaran, dan Referensi Keislaman Siswa-Siswi Madrasah
+            <i class="fas fa-book-reader" style="margin-right: 8px;"></i> Selamat Datang di E-Perpus MTsS Nurul Iman Rejo Agung — Pusat Literasi Digital, Modul Pembelajaran, dan Referensi Keislaman Siswa-Siswi Madrasah 📚✨
         </marquee>
     </div>
 
@@ -415,12 +425,12 @@
                 card.className = "book-card";
                 card.innerHTML = `
                     <div class="book-cover-wrapper">
-                        ${book.cover ? `<img src="${book.cover}" alt="${book.title}">` : `<div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:#FFFFFF;"><i class="fas fa-book-open fa-3x" style="color: rgba(255,255,255,0.3);"></i></div>`}
+                        ${book.cover ? `<img src="${book.cover}" alt="${book.title}">` : `<div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; background:#0A192F; color:#FFFFFF; border-radius:4px;"><i class="fas fa-book-open fa-2x" style="color: rgba(255,255,255,0.4);"></i></div>`}
                     </div>
                     <div class="book-info">
                         <span class="book-category-tag">${book.category || 'Umum'}</span>
                         <h3 class="book-title" title="${book.title}">${book.title}</h3>
-                        <p class="book-author"><i class="fas fa-pen-nib" style="font-size: 10px; margin-right: 4px;"></i> ${book.author}</p>
+                        <p class="book-author" title="${book.author}"><i class="fas fa-pen-nib" style="font-size: 9px; margin-right: 4px;"></i> ${book.author}</p>
                         <div class="book-actions">
                             <a href="${book.fileUrl}" target="_blank" class="btn-read">
                                 <i class="fas fa-book-reader"></i> Baca Online
